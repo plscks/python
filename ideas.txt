@@ -1,0 +1,10 @@
+IDEAS FOR PYTHON PROGRAMS
+
+Pain/symptom tracking?
+             -need to store inputs
+             -lists
+             -basic selectable menus
+
+General tracking, data collection, and input control knowledge.
+
+RO/repair tracking?

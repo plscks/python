@@ -6,6 +6,7 @@
 import math
 import os
 
+
 def err():
     print('\n')
     print('\n **********ERROR**********')
@@ -31,7 +32,7 @@ if x is ('c'):
     print('\nFinding side c')
     a = int(input('\nSide a:'))
     b = int(input('\nSide b:'))
-    h = math.sqrt(((a * a) + (b * b)))
+    h = math.sqrt(((a ** 2) + (b ** 2)))
     print('\nSide c is equal to:')
     print(h)
 else:
@@ -41,6 +42,6 @@ else:
     if b > h:
         err()
     else:
-        a = math.sqrt(((h * h) - (b * b)))
+        a = math.sqrt(((h ** 2) - (b ** 2)))
         print('\nUnknown side is equal to:')
         print(a)
