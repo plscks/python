@@ -25,24 +25,24 @@ def new():
         f.write('\n')
         f.write('\n')
         for i in range(Lines):
-            if i == 0:
+            if 0 >= i < Lines:
                 LineA = input('\nLine A: ')
-               # i = i + 1
+                i = i + 1
                 f.write('Line A: ' + str(LineA))
                 recs()
-            elif i == 1:
+            elif 1 >= i < Lines:
                 LineB = input('\nLine B: ')
-               # i = i + 1
+                i = i + 1
                 f.write('\n')
                 f.write('\nLine B: ' + str(LineB))
                 recs()
-            elif i == 2:
+            elif 2 >= i < Lines:
                 LineC = input('\nLine C: ')
-               # i = i + 1
+                i = i + 1
                 f.write('\n')
                 f.write('\nLine C: ' + str(LineC))
                 recs()
-            elif i is Lines:
+            else:
                 print('\nReturning to menu...')
                 time.sleep(2)
                 menu()

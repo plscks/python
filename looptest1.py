@@ -1,8 +1,7 @@
-recs = 0
-x = 0
-
-dct = {rec1: '1', rec2: '2'}
-
+d = {}
 recs = input('How many redomendations?: ')
-while x < recs:
-    x = x + 1
+recs = int(recs)
+for i in range(recs):
+    i = i + 1
+    d[i] = input('Rec #' + str(i) + ': ')
+    print('Rec ' + str(i) + ': ' + d[i])

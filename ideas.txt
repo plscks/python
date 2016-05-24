@@ -8,3 +8,11 @@ Pain/symptom tracking?
 General tracking, data collection, and input control knowledge.
 
 RO/repair tracking?
+
+------------------------------------------------------------------
+MENU OUTLINE
+
+NEW
+APPEND EXSTING
+QUIT
+
