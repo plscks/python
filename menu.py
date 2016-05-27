@@ -1,9 +1,7 @@
-#!/usr/bin/python
-# Version 1
-## Show menu ##
+# Menu.py for tracking Repair orders
+# Written by plscks
 import os
 import time
-import math
 
 
 # ROnumber = 0
@@ -97,31 +95,32 @@ def new():
 
 def menu():
     os.system('clear')
-    print (30 * '-')
-    print ('   M A I N - M E N U')
-    print (30 * '-')
-    print ('1. New RO')
-    print ('2. Existing RO - NOT WORKING YET')
-    print ('3. Quit')
-    print (30 * '-')
-    ## Get input ###
+    print(30 * '-')
+    print('   M A I N - M E N U')
+    print(30 * '-')
+    print('1. New RO')
+    print('2. Existing RO - NOT WORKING YET')
+    print('3. Quit')
+    print(30 * '-')
+    # Get input ###
     choice = input('Enter your choice [1-3] : ')
-    ### Convert string to int type ##
+    # Convert string to int type ##
     choice = int(choice)
-    ### Take action as per selected menu-option ###
+    # Take action as per selected menu-option ###
     if choice == 1:
-        print ('Opening new RO...')
+        print('Opening new RO...')
         time.sleep(2)
         os.system('clear')
         new()
     elif choice == 2:
-        print ('Broken for now...Try again')
+        print('Work in progress...')
         time.sleep(2)
-        menu()
+        os.system('clear')
+        open()
     elif choice == 3:
-        print ('Quitting!')
+        print('Quitting!')
     else:  # default ##
-        print ('Invalid number. Try again...')
+        print('Invalid number. Try again...')
         time.sleep(2)
         menu()
 
@@ -134,6 +133,10 @@ def recs():
         j = j + 1
         d[j] = input('Rec #' + str(j) + ': ')
         f.write('\n    Rec #' + str(j) + ': ' + d[j])
+
+
+def open():
+
 
 
 os.system('clear')
