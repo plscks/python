@@ -15,6 +15,9 @@ def new():
     global ROnumber
     global ROfile
     global ro
+    print(30 * '-')
+    print('New RO')
+    print(30 * '-')
     ROnumber = input('RO Number: ')
     ROfile = str(ROnumber) + '.txt'
     Lines = input('\nNumber of lines(13 max): ')
