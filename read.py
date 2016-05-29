@@ -7,17 +7,21 @@ import os
 
 def newLine():
     line = input('Line: ')
-    ROline = 'Line ' + str(line)
-    ROdesc = input('New line: ')
-    ROnew = '*' + str(ROline) + ': ' + str(ROdesc) + '\n'
-    f1 = open(ROfile, 'r')
-    f2 = open(ROtemp, 'w')
-    for line in f1:
-        f2.write(ROnew if ROline in line else line)
-    f1.close()
-    f2.close()
-    os.remove(ROfile)
-    os.rename(ROtemp, ROfile)
+    if line == '':
+        print('Invalid entry! Try again please.')
+        newLine()
+    else:
+        ROline = 'Line ' + str(line)
+        ROdesc = input('New line: ')
+        ROnew = '*' + str(ROline) + ': ' + str(ROdesc) + '\n'
+        f1 = open(ROfile, 'r')
+        f2 = open(ROtemp, 'w')
+        for line in f1:
+            f2.write(ROnew if ROline in line else line)
+        f1.close()
+        f2.close()
+        os.remove(ROfile)
+        os.rename(ROtemp, ROfile)
 
 
 def openMenu():
@@ -42,6 +46,9 @@ def mainMenu():
     else:
         print('Invalid entry! Try again please.')
         mainMenu()
+
+
+# def recChange():
 
 
 openMenu()
