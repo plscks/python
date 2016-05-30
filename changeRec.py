@@ -3,6 +3,7 @@
 # written by
 # plscks
 import os
+import time
 
 
 def openMenu():
@@ -19,12 +20,19 @@ def openMenu():
 
 
 def recChange():
+    global in_file
+    lines = []
     with open(ROfile, 'rt') as in_file:
-        contents = in_file.read()
-        in_file.close()
-    print(contents)
+        for line in in_file:
+            lines.append(line)
+    for element in lines:
+        print(element, end='')
+    print('\n')
+    for linenum, line in enumerate(lines):
+        print(linenum, line, end='')
 
 
 openMenu()
 os.system('cls' if os.name == 'nt' else 'clear')
 recChange()
+in_file.close()
