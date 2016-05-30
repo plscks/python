@@ -96,7 +96,7 @@ def new():
             print('\nReturning to menu...')
             time.sleep(2)
             menu()
-            ro.close()
+    ro.close()
 
 
 def menu():
@@ -146,7 +146,7 @@ def newLineExit():
     if c == 'y':
         recChange()
     elif c == 'n':
-        menu()  # placeholder for main menu.py
+        menu()
     else:
         print('Invalid entry! Try again please :P')
         newLineExit()
@@ -204,7 +204,7 @@ def mainMenu():
             recChange()
         elif b == 'n':
             print('Returning to menu')
-            menu()  # placeholder should go to main menu.py
+            menu()
         else:
             print('Invalid entry! Try again please.')
             mainMenu()
@@ -235,9 +235,21 @@ def recChange():
     lines[recNumB] = '   *Rec #' + str(recNum) + ': ' + recDesc + '\n'
     with open(ROfile, 'w') as out_file:
         out_file.writelines(lines)
-    print('Changed a rec?')
     in_file.close()
     out_file.close()
+    d = input('Change another recommendation? (y/n):')
+    if d == 'y':
+        recChange()
+    elif d == 'n':
+        menu()
+    else:
+        print('Invalid entry! Try again please!')
+        ERR(mainMenu())
+
+
+def ERR(funct):
+    print('Invalid entry! Try again please')
+    funct
 
 os.system('cls' if os.name == 'nt' else 'clear')
 menu()
