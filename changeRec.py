@@ -21,6 +21,7 @@ def openMenu():
 
 def recChange():
     global in_file
+    global lines
     lines = []
     with open(ROfile, 'rt') as in_file:
         for line in in_file:
@@ -28,11 +29,22 @@ def recChange():
     for element in lines:
         print(element, end='')
     print('\n')
+    substr = 'Line B'
     for linenum, line in enumerate(lines):
-        print(linenum, line, end='')
+        index = 0
+        str = lines[linenum]
+        while index < len(str):
+            index = str.find(substr, index)
+            if index == -1:
+                break
+            print('Line: ', linenum, 'Index: ', index)
+            index += len(substr)
+    print(lines[6 + 2])
+    # print(linenum, line, end='')
 
 
 openMenu()
 os.system('cls' if os.name == 'nt' else 'clear')
 recChange()
+print('\n')
 in_file.close()

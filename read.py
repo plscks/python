@@ -38,20 +38,31 @@ def openMenu():
 
 
 def mainMenu():
-    a = input('Edit a line? (y/n): ')
+    a = input('Change a line? (y/n): ')
     if a == 'y':
         newLine()
     elif a == 'n':
-        recChange()
+        b = input('Change a recommendation? (y/n): ')
+        if b == 'y':
+            recChange()
+        elif b == 'n':
+            print('Returning to menu')
+            openMenu()
+        else:
+            print('Invalid entry! Try again please.')
+            mainMenu()
     else:
         print('Invalid entry! Try again please.')
         mainMenu()
 
 
-# def recChange():
+def recChange():
+    substrLine = input('Which line\'s recommendation to change?: ')
+    substrLine = 'Line ' + substrLine
+    recNum = input('Which rec #?: ')
 
 
 openMenu()
 mainMenu()
 print('changed some stuff maybe?')
-quit()
+quit()  # should go back to main menu
