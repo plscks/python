@@ -26,20 +26,23 @@ def recChange():
     with open(ROfile, 'rt') as in_file:
         for line in in_file:
             lines.append(line)
-    for element in lines:
-        print(element, end='')
+    # for element in lines:
+        # print(element, end='')
     print('\n')
     substr = 'Line B'
     for linenum, line in enumerate(lines):
         index = 0
-        str = lines[linenum]
-        while index < len(str):
-            index = str.find(substr, index)
+        stri = lines[linenum]
+        while index < len(stri):
+            index = stri.find(substr, index)
             if index == -1:
                 break
             print('Line: ', linenum, 'Index: ', index)
+            print(linenum)
+            linenumB = linenum
             index += len(substr)
-    print(lines[6 + 2])
+    # print(lines[6 + 2])
+    print(linenumB)
     # print(linenum, line, end='')
 
 
