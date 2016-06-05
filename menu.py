@@ -249,7 +249,9 @@ def recChange():
 
 def ERR(funct):
     print('Invalid entry! Try again please')
+    time.sleep(2)
     funct
+
 
 os.system('cls' if os.name == 'nt' else 'clear')
 menu()
