@@ -28,3 +28,5 @@ looptest.py
 read.py
 changeRec.py
 linetest.py
+linetest1.py
+linetest2.py
