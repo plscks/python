@@ -22,11 +22,12 @@ def new():
         ro.write(ROnumber)
         ro.write('\n')
         ro.write('\n')
-        for x in range(Lines):
+        for i in range(Lines):
             i = i + 1
             letter = itertools.cycle(z)
             j.append(i)
             d = dict(zip(j, letter))
+            print('\n')
             newLine = input('Line ' + d[i] + ': ')
             ro.write('Line ' + d[i] + ': ' + newLine)
             recs()
