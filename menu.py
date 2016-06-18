@@ -61,7 +61,7 @@ def menu():
     print('   M A I N - M E N U')
     print(30 * '-')
     print('1. New RO')
-    print('2. Existing RO - NOT WORKING YET')
+    print('2. Existing RO')
     print('3. Quit')
     print(30 * '-')
     # Get input ###
