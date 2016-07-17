@@ -2,15 +2,21 @@
 # written by plscks
 import os
 import os.path
+import random
 
 
+c = []
 d = []
+e = {}
 dirname = '/home/plscks/Pictures/Wallpapers/'
 for f in os.listdir(dirname):
     if f.endswith('.jpg'):
         d.append(f)
     if f.endswith('.png'):
         d.append(f)
+random.shuffle(d)
+c = list(range(len(d)))
+e = dict(zip(c, d))
 
 
 with open('background-1.xml', 'wt') as back:
@@ -24,9 +30,18 @@ with open('background-1.xml', 'wt') as back:
     back.write('\n    <second>00</second>')
     back.write('\n    </starttime>')
     back.write('\n<!-- This animation will start at midnight. -->')
-    for s in d:
+    for s in e:
         back.write('\n  <static>')
         back.write('\n    <duration>600.0</duration>')
-        back.write('\n    <file>' + dirname + s + '</file>')
+        back.write('\n    <file>' + dirname + e[s] + '</file>')
         back.write('\n  </static>')
+        back.write('\n  <transition>')
+        back.write('\n    <duration>5.0</duration>')
+        back.write('\n    <from>' + dirname + e[s] + '</from>')
+        if ((s + 1) in e) == True:
+            back.write('\n    <to>' + dirname + e[(s + 1)] + '</to>')
+            back.write('\n  </transition>')
+        else:
+            back.write('\n    <to>' + dirname + e[0] + '</to>')
+            back.write('\n  </transition>')
     back.write('\n</background>')
