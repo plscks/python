@@ -2,10 +2,11 @@
 # -*- coding: utf-8 -*-
 # Daily Reddit Wallpaper Changer by ssimunic
 # - https://github.com/ssimunic/Daily-Reddit-Wallpaper.git -
-# Eddited by plscks
+# Edited by plscks
 from __future__ import unicode_literals
 import argparse
 import ctypes
+import hashlib
 import os
 import praw
 import platform
@@ -45,14 +46,16 @@ def load_config():
 
             ret = {}
 
-            # Add a value to ret, printing an error message if there is an error
+            # Add a value to ret, printing an error message if there is an
+            # error
             def add_to_ret(fun, name):
                 try:
                     ret[name] = fun(section_name, name)
                 except ValueError as e:
                     err_str = "Error in config file.  Variable '{}': {}. The default '{}' will be used."
 
-                    # print sys.stderr >> err_str.format(name, str(e), default[name])
+                    # print sys.stderr >> err_str.format(name, str(e),
+                    # default[name])
                     ret[name] = default[name]
 
             add_to_ret(config.get, "subreddit")
@@ -78,7 +81,8 @@ def parse_args():
                         help="Example: art, getmotivated, wallpapers, ...")
     parser.add_argument("-t", "--time", type=str, default=config["time"],
                         help="Example: new, hour, day, week, month, year")
-    parser.add_argument("-n", "--nsfw", action='store_true', default=config["nsfw"], help="Enables NSFW tagged posts.")
+    parser.add_argument("-n", "--nsfw", action='store_true',
+                        default=config["nsfw"], help="Enables NSFW tagged posts.")
     parser.add_argument("-d", "--display", type=int, default=config["display"],
                         help="Desktop display number on OS X (0: all displays, 1: main display, etc")
     parser.add_argument("-o", "--output", type=str, default=config["output"],
@@ -137,13 +141,16 @@ def detect_desktop_environment():
                 """
     elif os.environ.get("GNOME_DESKTOP_SESSION_ID"):
         environment["name"] = "gnome"
-        environment["command"] = "gsettings set org.gnome.desktop.background picture-uri file://{save_location}"
+        environment[
+            "command"] = "gsettings set org.gnome.desktop.background picture-uri file://{save_location}"
     elif os.environ.get("DESKTOP_SESSION") == "Lubuntu":
         environment["name"] = "lubuntu"
-        environment["command"] = "pcmanfm -w {save_location} --wallpaper-mode=fit"
+        environment[
+            "command"] = "pcmanfm -w {save_location} --wallpaper-mode=fit"
     elif os.environ.get("DESKTOP_SESSION") == "mate":
         environment["name"] = "mate"
-        environment["command"] = "gsettings set org.mate.background picture-filename {save_location}"
+        environment[
+            "command"] = "gsettings set org.mate.background picture-filename {save_location}"
     else:
         try:
             info = subprocess.getoutput("xprop -root _DT_SAVE_MODE")
@@ -164,12 +171,13 @@ if __name__ == '__main__':
     supported_linux_desktop_envs = ["gnome", "mate", "kde", "lubuntu"]
 
     # Python Reddit Api Wrapper
-    r = praw.Reddit(user_agent="Get top wallpaper from /r/{subreddit} by /u/ssimunic".format(subreddit=subreddit))
+    r = praw.Reddit(
+        user_agent="Get top wallpaper from /r/{subreddit} by /u/ssimunic".format(subreddit=subreddit))
 
     # Get top image link
     image_url = get_top_image(r.get_subreddit(subreddit))
     if image_url is None:
-        sys.exit("Error: No suitable images were found, the program is now" \
+        sys.exit("Error: No suitable images were found, the program is now"
                  " exiting.")
 
     # Request image
@@ -182,7 +190,7 @@ if __name__ == '__main__':
         home_dir = os.path.expanduser("~")
         save_location = "{home_dir}/{save_dir}/{subreddit}-{time}.jpg".format(home_dir=home_dir, save_dir=save_dir,
                                                                               subreddit=subreddit,
-                                                                              time=time.strftime("%d-%m-%Y-%H%M"))
+                                                                              time=time.strftime("%m-%d-%Y-%H%M"))
 
         # Create folders if they don't exist
         dir = os.path.dirname(save_location)
@@ -193,5 +201,43 @@ if __name__ == '__main__':
         with open(save_location, "wb") as fo:
             for chunk in response.iter_content(4096):
                 fo.write(chunk)
+
+        c = []
+        d = []
+        e = {}
+        newfilename = subreddit + '-' + time.strftime('%m-%d-%Y-%H%M') + '.jpg'
+        newfilepath = dir + '/'
+        newfile = newfilepath + newfilename
+        for f in os.listdir(dir):
+            if f.endswith('.jpg'):
+                d.append(f)
+            if f.endswith('.png'):
+                d.append(f)
+        size1 = (os.stat(newfile)).st_size
+        # print(str(size1))
+        d.remove(newfilename)
+        # print(d)
+        for s in d:
+            c.append((os.stat(newfilepath + s)).st_size)
+        # print(c)
+        e = dict(zip(d, c))
+        # print(e)
+        # print('\n')
+        for t in e:
+            # print(e[t])
+            if e[t] == size1:
+                with open(newfile, 'rb') as newCheckFile:
+                    newData = newCheckFile.read()
+                    new_md5 = hashlib.md5(newData).hexdigest()
+                with open((newfilepath + t), 'rb') as suspectDup:
+                    suspectData = suspectDup.read()
+                    suspect_md5 = hashlib.md5(suspectData).hexdigest()
+                if new_md5 == suspect_md5:
+                    # print(str(new_md5))
+                    # print(str(suspect_md5))
+                    print(str(t) + ' is a dulpicate of ' + newfilename)
+                    os.remove(dir + '/' + str(t))
+                    print('Removed ' + dir + '/' + str(t))
+
     else:
         sys.exit("Error: Image url is not available, the program is now exiting.")
