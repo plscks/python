@@ -17,7 +17,7 @@ for f in os.listdir(dirname):
 random.shuffle(d)
 c = list(range(len(d)))
 e = dict(zip(c, d))
-
+f = str(c[-1] +1)
 
 with open('background-1.xml', 'wt') as back:
     back.write('<background>')
@@ -45,3 +45,4 @@ with open('background-1.xml', 'wt') as back:
             back.write('\n    <to>' + dirname + e[0] + '</to>')
             back.write('\n  </transition>')
     back.write('\n</background>')
+print('\nRandomized and created slideshow of ' + f + ' different wallpapers')
