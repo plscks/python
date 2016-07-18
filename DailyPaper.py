@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 # Daily Reddit Wallpaper Changer by ssimunic
 # - https://github.com/ssimunic/Daily-Reddit-Wallpaper.git -

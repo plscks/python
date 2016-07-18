@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # UbunutMate Wallpaper slideshow maker
 # written by plscks
 import os
@@ -19,7 +20,7 @@ c = list(range(len(d)))
 e = dict(zip(c, d))
 f = str(c[-1] +1)
 
-with open('background-1.xml', 'wt') as back:
+with open((dirname + 'background-1.xml'), 'wt+') as back:
     back.write('<background>')
     back.write('\n  <starttime>')
     back.write('\n    <year>2009</year>')
