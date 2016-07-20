@@ -1,11 +1,13 @@
 #!/usr/bin/python3
 # UbunutMate Wallpaper slideshow maker
 # written by plscks
+import datetime
 import os
 import os.path
 import random
 
 
+now = now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 c = []
 d = []
 e = {}
@@ -46,4 +48,4 @@ with open((dirname + 'background-1.xml'), 'wt+') as back:
             back.write('\n    <to>' + dirname + e[0] + '</to>')
             back.write('\n  </transition>')
     back.write('\n</background>')
-print('\nRandomized and created slideshow of ' + f + ' different wallpapers')
+print(now + '    ' + 'Randomized and created slideshow of ' + f + ' different wallpapers')

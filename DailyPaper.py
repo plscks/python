@@ -6,6 +6,7 @@
 from __future__ import unicode_literals
 import argparse
 import ctypes
+import datetime
 import hashlib
 import os
 import praw
@@ -22,6 +23,8 @@ if sys.version_info <= (2, 6):
     import commands as subprocess
 else:
     import subprocess
+
+now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 
 def load_config():
@@ -235,9 +238,10 @@ if __name__ == '__main__':
                 if new_md5 == suspect_md5:
                     # print(str(new_md5))
                     # print(str(suspect_md5))
-                    print(str(t) + ' is a dulpicate of ' + newfilename)
+                    print(now + '    ' + str(t) +
+                          ' is a dulpicate of ' + newfilename)
                     os.remove(dir + '/' + str(t))
-                    print('Removed ' + dir + '/' + str(t))
+                    print(' ' * 23 + 'Removed ' + dir + '/' + str(t))
 
     else:
         sys.exit("Error: Image url is not available, the program is now exiting.")
