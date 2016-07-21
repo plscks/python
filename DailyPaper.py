@@ -238,10 +238,13 @@ if __name__ == '__main__':
                 if new_md5 == suspect_md5:
                     # print(str(new_md5))
                     # print(str(suspect_md5))
-                    print(now + '    ' + str(t) +
-                          ' is a dulpicate of ' + newfilename)
+                    print(now + '    ' + newfilename +
+                          ' is a dulpicate of ' + str(t))
                     os.remove(dir + '/' + str(t))
-                    print(' ' * 23 + 'Removed ' + dir + '/' + str(t))
+                    print(' ' * 23 + 'Removing older file: ' + str(t))
+                else:
+                    print(now + '    ' + newfilename + ' is the same size as ' + str(t) + ' but is a different file')
+        print(now + '    Added ' + newfilename + ' to Wallpapers.')
 
     else:
         sys.exit("Error: Image url is not available, the program is now exiting.")
