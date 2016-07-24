@@ -7,15 +7,32 @@ import os.path
 import random
 
 
+def all_casings(input_string):
+    if not input_string:
+        yield ""
+    else:
+        first = input_string[:1]
+        if first.lower() == first.upper():
+            for sub_casing in all_casings(input_string[1:]):
+                yield first + sub_casing
+        else:
+            for sub_casing in all_casings(input_string[1:]):
+                yield first.lower() + sub_casing
+                yield first.upper() + sub_casing
+
+
+ext = []
+jpg = [x for x in all_casings('.jpg')]
+png = [x for x in all_casings('.png')]
+ext.extend(png)
+ext.extend(jpg)
 now = now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 c = []
 d = []
 e = {}
 dirname = '/home/plscks/Pictures/Wallpapers/'
 for f in os.listdir(dirname):
-    if f.endswith('.jpg'):
-        d.append(f)
-    if f.endswith('.png'):
+    if f.endswith(tuple(ext)):
         d.append(f)
 random.shuffle(d)
 c = list(range(len(d)))
