@@ -21,12 +21,12 @@ path1 = '/home/' + user + '/'
 file1 = url1[57:]
 url2 = 'https://raw.githubusercontent.com/plscks/settings/master/.emacs'
 path2 = '/home/' + user + '/'
-#url3 = 'https://raw.githubusercontent.com/plscks/settings/master/.bash_aliases'
-#path3 =
-mainIn1
+# url3 = 'https://raw.githubusercontent.com/plscks/settings/master/.bash_aliases'
+# path3 =
+mainIn1()
 
 
-def mainIn1:
+def mainIn1():
     if os.path.isdir(path1) == True:
         if os.path.isfile(path1 + file1 == True):
             ow1 = input(file1 + ' exists, overwrite it? (Y/N): ')
@@ -45,11 +45,10 @@ def mainIn1:
         write1
 
 
-def write1:
-    
+def write1():
 
 
-def mainIn2:
+def mainIn2():
     if os.path.isdir(path2) == True:
         if os.path.isfile(path2 + file2 == True):
             ow2 = input(file2 + ' exists, overwrite it? (Y/N): ')
@@ -68,5 +67,4 @@ def mainIn2:
         write2
 
 
-def write2:
-    
+def write2():
