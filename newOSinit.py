@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # A script to setup fresh linux installs with my personal
 # bash and emacs preferences
 # written by plscks
@@ -17,7 +18,7 @@ import urllib.request
 
 os.system('cls' if os.name == 'nt' else 'clear')
 user = input('USERNAME: ')
-url1 = 'https://raw.githubusercontent.com//plscks/settings/master/.bashrc'
+url1 = 'https://raw.githubusercontent.com/plscks/settings/master/.bashrc'
 path1 = '/home/' + user + '/'
 file1 = url1[57:]
 url2 = 'https://raw.githubusercontent.com/plscks/settings/master/.emacs'
@@ -25,26 +26,29 @@ path2 = '/home/' + user + '/'
 file2 = url2[57:]
 # url3 = 'https://raw.githubusercontent.com/plscks/settings/master/.bash_aliases'
 # path3 =
-mainIn1()
 
 
 def mainIn1():
+    global path1
+#    global file1
     if os.path.isdir(path1) == True:
-        if os.path.isfile(path1 + file1 == True):
-            ow1 = input(file1 + ' exists, overwrite it? (Y/N): ')
-            if ow1 == 'Y':
-                print('Overwriting ' + file1)
+        if os.path.isfile(path1 + file1) == True:
+            ow1 = input(path1 + file1 + ' exists, overwrite it? (Y/N): ')
+            if ow1 == 'Y' or ow1 == 'y' or ow1 == 'yes':
+                print('Overwriting ' + path1 + file1)
+                print('')
                 write1()
             else:
-                print('Skipping ' + file1)
+                print('Skipping ' + path1 + file1)
+                print('')
                 mainIn2()
         else:
             print('Saving ' + path1 + file1)
             write1()
     else:
         print(path1 + ' Does not exist. Incorrect pathname.')
-        global path1 = input('Input correct path: ')
-        write1()
+        path1 = input('Input correct path: ')
+        mainIn1()
 
 
 def write1():
@@ -55,14 +59,17 @@ def write1():
 
 
 def mainIn2():
+    global path2
+    global file2
     if os.path.isdir(path2) == True:
-        if os.path.isfile(path2 + file2 == True):
-            ow2 = input(file2 + ' exists, overwrite it? (Y/N): ')
-            if ow2 == 'Y':
-                print('Overwriting ' + file2)
+        if os.path.isfile(path2 + file2) == True:
+            ow2 = input(path2 + file2 + ' exists, overwrite it? (Y/N): ')
+            if ow2 == 'Y' or ow2 == 'y' or ow2 == 'yes':
+                print('Overwriting ' + path2 + file2)
+                print('')
                 write2()
             else:
-                print('Skipping ' + file2)
+                print('Skipping ' + path2 + file2)
                 print('')
                 print('Skipping both files. Exiting program')
         else:
@@ -70,13 +77,16 @@ def mainIn2():
             write2()
     else:
         print(path2 + ' Does not exist. Incorrect pathname.')
-        global path2 = input('Input correct path: ')
-        write2()
+        path2 = input('Input correct path: ')
+        mainIn2()
 
 
 def write2():
     with urllib.request.urlopen(url2) as responce2, open(path2 + file2, 'wb') as temp2:
         shutil.copyfileobj(responce2, temp2)
     time.sleep(2)
-    print('Files copied. Enjoy your settings. Peace.')
+    print('File(s) copied. Enjoy your settings. Peace.')
     quit()
+
+
+mainIn1()
