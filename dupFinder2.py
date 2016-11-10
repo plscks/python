@@ -11,6 +11,7 @@ import time
 d = []
 e = []
 f = {}
+g = {}
 
 # d is list of files in cwd
 print('Grabbing a list of files in the CWD')
@@ -34,3 +35,9 @@ f = dict(zip(d, e))
 time.sleep(1)
 print(f)
 print()
+g = f
+# Now we will attempt to check the files for duplicate sizes
+for k in f:
+    print('We are checking for duplicate file size now')
+    tempsize = f[k]
+    
