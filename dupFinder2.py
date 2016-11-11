@@ -35,9 +35,11 @@ f = dict(zip(d, e))
 time.sleep(1)
 print(f)
 print()
-g = f
+g = dict(zip(d, e))
 # Now we will attempt to check the files for duplicate sizes
 for k in f:
     print('We are checking for duplicate file size now')
     tempsize = f[k]
+    del g[k]
+    if f[k] == 
     
