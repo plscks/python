@@ -15,24 +15,24 @@ g = {}
 
 # d is list of files in cwd
 print('Grabbing a list of files in the CWD')
-time.sleep(2)
+#time.sleep(2)
 d = os.listdir(os.getcwd())
-time.sleep(1)
+#time.sleep(1)
 print(d)
 print()
 # For every file in cwd, size is obtained and added to list e
 print('Creating a list of file sizes from the first list of files')
-time.sleep(2)
+#time.sleep(2)
 for f in d:
     e.append(os.stat(f).st_size)
-time.sleep(1)
+#time.sleep(1)
 print(e)
 print()
 # Now we will zip both lists together to form a dictionary
 print('Zipping both lists together in a dictionary')
-time.sleep(2)
+#time.sleep(2)
 f = dict(zip(d, e))
-time.sleep(1)
+#time.sleep(1)
 print(f)
 print()
 g = dict(zip(d, e))
@@ -40,6 +40,14 @@ g = dict(zip(d, e))
 for k in f:
     print('We are checking for duplicate file size now')
     tempsize = f[k]
+    tempname = k
+    print('checking this file:')
+    print(tempsize)
+    print(tempname)
+    print()
     del g[k]
-    if f[k] == 
-    
+    for kk in g:
+        if g[kk] == tempsize:
+            print(kk + ' is possible duplicate of ' + tempname)
+        else:
+            print(kk + ' is okay')
