@@ -51,3 +51,4 @@ for k in f:
             print(kk + ' is possible duplicate of ' + tempname)
         else:
             print(kk + ' is okay')
+        g = dict(zip(d, e))
