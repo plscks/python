@@ -1,6 +1,5 @@
 # A simple secret santa name pairing script
 
-import copy
 import os
 import random
 import time
@@ -38,7 +37,7 @@ def mixer():
             mixer()
         else:
             time.sleep(0)
-        print(x + ' gets ' + c[x])
+    print(c)
 
 os.system('cls')
 main()
