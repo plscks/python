@@ -48,6 +48,8 @@ def mixer():
         del c['Scott Himmelmann']
         input('Press any key to confinue...')
         os.system('cls' if os.name == 'nt' else 'clear')
+        input('Press any key to continue...')
+        os.system('cls' if os.name == 'nt' else 'clear')
         for x in c:
             print(c[x] + ' gets ' + x)
         print('Done')
