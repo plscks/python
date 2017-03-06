@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # A simple Raspberry pi 3 GPIO test
 # Written by
 # (except lines 5-13, these are from the RPi site raspberrypi.org/documentation/usage/python/more.md)
