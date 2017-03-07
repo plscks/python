@@ -26,12 +26,12 @@ except:
 
 
 if status == str('<Response [200]>'):
-    print(site + ' is okay right now')
+#    print(site + ' is okay right now')
     GPIO.output(17, 1) #Turn on blue LED
     GPIO.output(22, 0) #Make sure red LED is off
 #    GPIO.cleanup()
 else:
-    print(site + ' is busted!! TRIGGER THE ALARMS!')
+#    print(site + ' is busted!! TRIGGER THE ALARMS!')
     print(status)
     GPIO.output(22, 1) #Turn on red LED
     GPIO.output(17, 0) #Turn off blue LED
