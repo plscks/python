@@ -6,10 +6,11 @@
 #
 # BCM 17 - blue LED website ALL GOOD
 # BCM 22 - red LED website DOWN
-# BCM 23 - white LED music stream ALL GOOD
+# BCM 23 - white LED user connected to music stream ALL
 
 import requests
 import RPi.GPIO as GPIO
+import urllib.request
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
@@ -24,15 +25,22 @@ except:
     status = 'fail'
     pass
 
-
+# This works, but when set to every minute blocks ssh which is no good
 if status == str('<Response [200]>'):
-#    print(site + ' is okay right now')
     GPIO.output(17, 1) #Turn on blue LED
     GPIO.output(22, 0) #Make sure red LED is off
-#    GPIO.cleanup()
 else:
-#    print(site + ' is busted!! TRIGGER THE ALARMS!')
     print(status)
     GPIO.output(22, 1) #Turn on red LED
     GPIO.output(17, 0) #Turn off blue LED
-#    GPIO.cleanup()
+
+response = urllib.request.urlopen('http://localhost:8001')
+html = response.read()
+test = str(html)
+linenumber = test.find("Listeners (current)")
+streamnumber = linenumber + 49
+listenernumber = test[streamnumber]
+if int(listenernumber) > 0:
+    GPIO.output(23, 1)
+else:
+    GPIO.output(23, 0)
