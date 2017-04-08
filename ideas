@@ -16,3 +16,8 @@ NEW
 APPEND EXSTING
 QUIT
 
+
+IDS STUFF
+---------------------------
+build python program to interface with mysql database, delete harmless notifications, 
+IP check, note, and block malicious queries.
