@@ -3,6 +3,9 @@
 # Daily Reddit Wallpaper Changer by ssimunic
 # - https://github.com/ssimunic/Daily-Reddit-Wallpaper.git -
 # Edited by plscks
+#
+# *REQUIRES praw==3.6.1
+#
 from __future__ import unicode_literals
 import argparse
 import ctypes
