@@ -1,14 +1,19 @@
 #!/usr/bin/python3
-#Test script lifted from
+# Test script lifted from
 # https://www.tutorialspoint.com/python3/python_database_access.htm
-#tinkered with by plscks
+# tinkered with by plscks
 # 'US' 'CA' OK
 #
-# Need to exclude local IPs from lists
+# This program utilizes a file with known good IP addresses
+# in the current directory, file name must be
+# : IPlist.txt
 #
-#
+# Need to ban bad IPs in firewall and remove
+# from SQL database and then remove debug info
+# for production version
 #
 
+import os
 import pymysql
 import socket, struct
 from geoip import geolite2
@@ -16,6 +21,9 @@ from geoip import geolite2
 raw_ip = []
 good_ip = []
 bad_ip = []
+cwd = os.getcwd()
+file = 'IPlist.txt'
+fullFile = cwd + '/' + file
 
 # Open database connection
 db = pymysql.connect("localhost","python","python","snort" )
@@ -54,13 +62,24 @@ for i in raw_ip:
     else:
         print('No info available, defaulting to bad list')
         print(ip + ' Added to bad list')
+        bad_ip.append(ip)
 
 print('----------------GOOD LIST---------------------')
 print(good_ip)
 print()
 print('----------------BAD  LIST---------------------')
 print(bad_ip)
-    
+
+
+# Read known good IP's from file and remove them from bad_ip list
+goodList = open(fullFile,'r').read().split('\n')
+goodList.pop()
+print('----------KNOWN GOOD IP----------------------')
+print(goodList)
+bad_ip_final = [x for x in bad_ip if x not in goodList]
+print('-----------BAD LIST FINAL--------------------')
+print(bad_ip_final)
+
 # Fetch a single row using fetchone() method.
 #data = cursor.fetchone()
 
