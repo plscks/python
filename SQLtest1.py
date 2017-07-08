@@ -8,11 +8,12 @@
 # in the current directory, file name must be
 # : IPlist.txt
 #
-# Need to ban bad IPs in firewall and remove
-# from SQL database and then remove debug info
-# for production version
+# Need to:
+# - remove bad IPs from SQL database
+# - remove debug info for production version
 #
 
+import iptc
 import os
 import pymysql
 import socket, struct
@@ -21,6 +22,7 @@ from geoip import geolite2
 raw_ip = []
 good_ip = []
 bad_ip = []
+bad_intip = []
 cwd = os.getcwd()
 file = 'IPlist.txt'
 fullFile = cwd + '/' + file
@@ -31,7 +33,7 @@ db = pymysql.connect("localhost","python","python","snort" )
 # prepare a cursor object using cursor() method
 cursor = db.cursor()
 
-#prepare sql inquiry
+# prepare sql inquiry
 sql = 'select ip_src, count(*) from iphdr group by ip_src;'
 
 # execute SQL query using execute() method.
@@ -39,14 +41,14 @@ cursor.execute(sql)
 
 results = cursor.fetchall()
 
-#fetch IPs as raw int and load into list
+# fetch IPs as raw int and load into list
 for row in results:
     ip_src = row[0]
     raw_ip.append(ip_src)
 
 print(raw_ip)
 
-#convert from integers to IPs
+# convert from integers to IPs
 for i in raw_ip:
     ip = socket.inet_ntoa(struct.pack('!L', i))
     info = geolite2.lookup(ip)
@@ -72,6 +74,7 @@ print(bad_ip)
 
 
 # Read known good IP's from file and remove them from bad_ip list
+# - SUCCESS
 goodList = open(fullFile,'r').read().split('\n')
 goodList.pop()
 print('----------KNOWN GOOD IP----------------------')
@@ -79,6 +82,26 @@ print(goodList)
 bad_ip_final = [x for x in bad_ip if x not in goodList]
 print('-----------BAD LIST FINAL--------------------')
 print(bad_ip_final)
+
+# Blacklist IP addresses in iptables
+# - SUCCESS!
+# Convert IPs to integers
+# - SUCCESS
+for badip in bad_ip_final:
+    chain = iptc.Chain(iptc.Table(iptc.Table.FILTER), 'INPUT')
+    rule = iptc.Rule()
+    rule.src = badip
+    target = iptc.Target(rule, 'DROP')
+    rule.target = target
+    chain.insert_rule(rule)
+    print('blacklisted ' + badip + ' in iptables.')
+    packedIP = socket.inet_aton(badip)
+    badInt = struct.unpack('!L', packedIP)[0]
+    bad_intip.append(badInt)
+    print(badip + ' as an integer is ' + str(badInt))
+
+print('List of IPs as integers to be removed from SQL database')
+print(bad_intip)
 
 # Fetch a single row using fetchone() method.
 #data = cursor.fetchone()
