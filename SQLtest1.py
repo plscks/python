@@ -99,6 +99,10 @@ for badip in bad_ip_final:
     badInt = struct.unpack('!L', packedIP)[0]
     bad_intip.append(badInt)
     print(badip + ' as an integer is ' + str(badInt))
+    sqlDEL = 'delete from iphdr where ip_src=' + str(badInt)
+    print(sqlDEL)
+# Need to prepare new cursor maybe? For delete commands?
+
 
 print('List of IPs as integers to be removed from SQL database')
 print(bad_intip)
