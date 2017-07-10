@@ -1,16 +1,20 @@
 #!/usr/bin/python3
 # Test script lifted from
 # https://www.tutorialspoint.com/python3/python_database_access.htm
-# tinkered with by plscks
+# tinkered with (and then expanded on) by plscks
 # 'US' 'CA' OK
 #
 # This program utilizes a file with known good IP addresses
 # in the current directory, file name must be
 # : IPlist.txt
 #
+# This is a functional program at this stage
+#
 # Need to:
-# - remove bad IPs from SQL database
 # - remove debug info for production version
+# - add check for sudo with message
+# - add 'are you sure' message
+# - add 'no foreign IPs detected' message
 #
 
 import iptc
@@ -40,6 +44,7 @@ sql = 'select ip_src, count(*) from iphdr group by ip_src;'
 cursor.execute(sql)
 
 results = cursor.fetchall()
+print(results)
 
 # fetch IPs as raw int and load into list
 for row in results:
@@ -47,6 +52,8 @@ for row in results:
     raw_ip.append(ip_src)
 
 print(raw_ip)
+cursor.close()
+db.close()
 
 # convert from integers to IPs
 for i in raw_ip:
@@ -87,6 +94,8 @@ print(bad_ip_final)
 # - SUCCESS!
 # Convert IPs to integers
 # - SUCCESS
+# Remove IPs from DB and commit
+# - SUCCESS!!
 for badip in bad_ip_final:
     chain = iptc.Chain(iptc.Table(iptc.Table.FILTER), 'INPUT')
     rule = iptc.Rule()
@@ -99,10 +108,19 @@ for badip in bad_ip_final:
     badInt = struct.unpack('!L', packedIP)[0]
     bad_intip.append(badInt)
     print(badip + ' as an integer is ' + str(badInt))
-    sqlDEL = 'delete from iphdr where ip_src=' + str(badInt)
+    sqlDEL = 'delete from iphdr where ip_src=' + str(badInt) + ';'
+    sqlDEL2 = 'delete from acid_event where ip_src=' + str(badInt) + ';'
     print(sqlDEL)
-# Need to prepare new cursor maybe? For delete commands?
-
+    print(sqlDEL2)
+    db2 = pymysql.connect("localhost","python","python","snort" )
+    cursor2 = db2.cursor()
+    cursor2.execute(sqlDEL)
+    cursor2.execute(sqlDEL2)
+    results2 = cursor2.fetchall()
+    print(results2)
+    db2.commit()
+    cursor2.close()
+    db2.close()
 
 print('List of IPs as integers to be removed from SQL database')
 print(bad_intip)
@@ -115,4 +133,4 @@ print(bad_intip)
 
 
 # disconnect from server
-db.close()
+#db.close()
