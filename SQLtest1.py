@@ -91,4 +91,3 @@ for badip in bad_ip_final:
     db2.commit()
     cursor2.close()
     db2.close()
-
