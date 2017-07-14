@@ -12,7 +12,6 @@
 #
 # Need to:
 # - Add 'no foreign IPs detected' message
-# - Add country of origin to 'Are you sure?' message
 #
 
 import iptc
@@ -21,6 +20,7 @@ import pymysql
 import socket, struct
 from geoip import geolite2
 
+dict = {}
 raw_ip = []
 good_ip = []
 bad_ip = []
@@ -55,15 +55,24 @@ for i in raw_ip:
             good_ip.append(ip)
         else:
             bad_ip.append(ip)
+            dict[ip] = info.country
     else:
         bad_ip.append(ip)
+        dict[ip] = 'No country info'
 goodList = open(fullFile,'r').read().split('\n')
 goodList.pop()
 bad_ip_final = [x for x in bad_ip if x not in goodList]
+# I don't know if this is proper or not, but it seems to work?
+for temp in goodList:
+    while True:
+        try:
+            dict.pop(temp)
+        except KeyError:
+            break
 
 # Are you sure check
-for j in bad_ip_final:
-    print(j)
+for ipbad in dict:
+    print(ipbad + ' from ' + dict[ipbad])
 sure = input('Are you sure you want to blacklist these IPs? (Y/N): ').lower()
 if sure in {'n', 'no', 'na', 'nope'}:
     print('Exiting with no changes applied')
