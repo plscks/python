@@ -13,6 +13,12 @@
 # Need to:
 # - Add 'no foreign IPs detected' message
 #
+import sys
+
+if (sys.version_info < (3, 0)):
+    print('This program requires python 3.0 or greater.')
+    print('Exiting.....')
+    exit()
 
 import iptc
 import os
