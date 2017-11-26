@@ -56,12 +56,16 @@ for i in raw_ip:
     ip = socket.inet_ntoa(struct.pack('!L', i))
     info = geolite2.lookup(ip)
     infotest = info is None
+    # Sometimes an IP with country = None makes it's way into the bad list and crashes line 88 with no value 
     if infotest == False:
         if info.country == 'US' or info.country == 'CA':
             good_ip.append(ip)
         else:
             bad_ip.append(ip)
-            dict[ip] = info.country
+            if info.country == None:          # Testing for no data failure
+                dict[ip] = 'No county info'   # TEST
+            else:
+                dict[ip] = info.country
     else:
         bad_ip.append(ip)
         dict[ip] = 'No country info'
@@ -78,6 +82,9 @@ for temp in goodList:
 
 # Are you sure check
 for ipbad in dict:
+# Something happens right here sometimes if info.country is nothing at all.....
+#    print(ipbad)
+#    print(dict[ipbad])
     print(ipbad + ' from ' + dict[ipbad])
 sure = input('Are you sure you want to blacklist these IPs? (Y/N): ').lower()
 if sure in {'n', 'no', 'na', 'nope'}:
