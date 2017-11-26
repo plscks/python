@@ -5,6 +5,8 @@
 # It has to be!
 #
 # written by plscks
+# p.s. - sorry o_0
+
 import os
 import time
 import hashlib
