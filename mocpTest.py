@@ -10,26 +10,26 @@
 import re
 import subprocess
 
-info = subprocess.getoutput('mocp --info')
-if info == '\nFATAL_ERROR: The server is not running!\n':
-    print('mocp is not running!')
-    quit()
-else:
-    S = re.search('State: (.+?)\n', info)
-    if S:
-        state = S.group(1)
-    f = re.search('File: (.+?)\n', info)
-    if f:
-        file = f.group(1)
-    A = re.search('Artist: (.+?)\n', info)
-    if A:
-        artist = A.group(1)
-    a = re.search('Album: (.+?)\n', info)
-    if a:
-        album = a.group(1)
-    s = re.search('SongTitle: (.+?)\n', info)
-    if s:
-        song = s.group(1)
+#info = subprocess.getoutput('mocp --info')
+output = subprocess.run(['mocp', '--info'], stdout=subprocess.PIPE)
+info = output.stdout.decode("utf-8")
+
+S = re.search('State: (.+?)\\n', info)
+if S:
+    state = S.group(1)
+f = re.search('File: (.+?)\\n', info)
+if f:
+    file = f.group(1)
+A = re.search('Artist: (.+?)\\n', info)
+if A:
+    artist = A.group(1)
+a = re.search('Album: (.+?)\\n', info)
+if a:
+    album = a.group(1)
+s = re.search('SongTitle: (.+?)\\n', info)
+if s:
+    song = s.group(1)
+
 
 if state == 'PAUSE':
     print('Paused.....')
