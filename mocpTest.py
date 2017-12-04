@@ -6,6 +6,9 @@
 # HERE GOES NOTHING!!!
 #
 # there are way to many 'quit()'s in here, oh well.....
+#
+# BLAGHRTHGGRRR! the core dumps I was getting were caused by moc V2.5.2
+# updating to mocp V2.6-alpha3 solves the repeated core dumps
 
 import re
 import subprocess
@@ -33,11 +36,8 @@ if s:
 
 if state == 'PAUSE':
     print('Paused.....')
-    quit()
-
-if file == 'http://192.168.254.31:8001/mpd.mp3':
-    print(song)
-    quit()
 else:
-    print(artist + ' - ' + album + ' - ' + song)
-    quit()
+    if file == 'http://192.168.254.31:8001/mpd.mp3':
+        print(song)
+    else:
+        print(artist + ' - ' + album + ' - ' + song)
