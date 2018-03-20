@@ -1,12 +1,19 @@
 # Scroll test 1
 # written by plscks
 # status: failure, does not function as intended in python3
+# Ugh, this works great after a little tweaking.
+# Now to tweak it a little for production
+#
+# push the envelope, watch it bend.
 
-import time,sys
+import time
+import sys
 
-s=input('Enter string to scroll: ')
+string = input('Enter string to scroll?: ')
+scroll = str(string) + '                                        '
+scrollFinal = scroll * 99
 while 1:
-    for i in range(80):
-        print(s[i:i+80])
+    for i in range(180):
+        print(scrollFinal[i:i+40], end='\r')
         sys.stdout.flush()
         time.sleep(0.1)
