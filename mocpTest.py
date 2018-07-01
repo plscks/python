@@ -36,6 +36,8 @@ if s:
 
 if state == 'PAUSE':
     print('Paused.....')
+elif state == 'STOP':
+    print('Stopped....')
 else:
     if file == 'http://192.168.254.31:8001/mpd.mp3':
         print(song)
