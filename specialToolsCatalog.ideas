@@ -1,0 +1,10 @@
+Ideas for a web catalog for the special tools at work.
+
+Needs
+-----------------------------------------
+Web interface with searching functions
+-search should filter number out of tool and return all possible matches by number only
+Login by tech #
+Database of special tools
+logging of who last queried each tool
+Able to run on raspberry pi
