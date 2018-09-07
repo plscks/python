@@ -4,12 +4,12 @@
 #############
 ##  GOALS  ##
 #############
-# - read all file names
-# - store all file names
-# - verify file integrity
-# - store bad file names and continue
-# - allow user to delete corrupt files individually or in batch, with preview option for individual
-# - exit
+# - [X] - read all picture file names
+# - [X] - store all picture file names
+# - []  - verify file integrity
+# - []  - store bad file names and continue
+# - []  - allow user to delete corrupt files individually or in batch, with preview option for individual
+# - []  - exit
 ############
 ## START  ##
 ############
@@ -29,6 +29,10 @@ def readPictures():
             keep.append(item)
     return keep
 
+def verifyPictures():
+    
+
 if __name__ == '__main__':
     keep = readPictures()
-    print keep
+    print(keep)
+    print(len(keep))
