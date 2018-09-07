@@ -6,19 +6,20 @@
 #############
 # - [X] - read all picture file names
 # - [X] - store all picture file names
-# - []  - verify file integrity
-# - []  - store bad file names and continue
+# - [X] - verify file integrity
+# - [X] - store bad file names and continue
 # - []  - allow user to delete corrupt files individually or in batch, with preview option for individual
 # - []  - exit
 ############
 ## START  ##
 ############
+import os
 from os import listdir
 from os.path import isfile, join
 from PIL import Image
 
-def readPictures():
-    files = [f for f in listdir('/home/plscks/Pictures/Wallpapers') if isfile(join('/home/plscks/Pictures/Wallpapers', f))]
+def readPictures(cwd):
+    files = [f for f in listdir(cwd) if isfile(join(cwd, f))]
     keep = []
     for item in files:
         if item.endswith('.jpg'):
@@ -29,10 +30,18 @@ def readPictures():
             keep.append(item)
     return keep
 
-def verifyPictures():
-    
+def verifyPictures(list, cwd):
+    rv = []
+    for f in list:
+        try:
+            test = Image.open(cwd + '/' + f)
+            test.verify()
+        except:
+            rv.append(f)
+    return rv
 
 if __name__ == '__main__':
-    keep = readPictures()
-    print(keep)
-    print(len(keep))
+    cwd = os.getcwd()
+    keep = readPictures(cwd)
+    bad = verifyPictures(keep, cwd)
+    print(bad)
