@@ -13,4 +13,22 @@
 ############
 ## START  ##
 ############
+from os import listdir
+from os.path import isfile, join
 from PIL import Image
+
+def readPictures():
+    files = [f for f in listdir('/home/plscks/Pictures/Wallpapers') if isfile(join('/home/plscks/Pictures/Wallpapers', f))]
+    keep = []
+    for item in files:
+        if item.endswith('.jpg'):
+            keep.append(item)
+        elif item.endswith('.png'):
+            keep.append(item)
+        elif item.endswith('.gif'):
+            keep.append(item)
+    return keep
+
+if __name__ == '__main__':
+    keep = readPictures()
+    print keep
