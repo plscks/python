@@ -19,6 +19,7 @@ from os.path import isfile, join
 from PIL import Image
 
 def readPictures(cwd):
+    """Read all .jpg .png .gif in current working directory returns them as a list"""
     files = [f for f in listdir(cwd) if isfile(join(cwd, f))]
     keep = []
     for item in files:
@@ -31,6 +32,7 @@ def readPictures(cwd):
     return keep
 
 def verifyPictures(list, cwd):
+    """Verifies integrity of pictures in cwd as input from filename list, returns list of corrupt pictures"""
     rv = []
     for f in list:
         try:
