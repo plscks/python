@@ -20,6 +20,7 @@ from PIL import Image
 
 def readPictures(cwd):
     """Read all .jpg .png .gif in current working directory returns them as a list"""
+    
     files = [f for f in listdir(cwd) if isfile(join(cwd, f))]
     keep = []
     for item in files:
@@ -33,6 +34,7 @@ def readPictures(cwd):
 
 def verifyPictures(list, cwd):
     """Verifies integrity of pictures in cwd as input from filename list, returns list of corrupt pictures"""
+    
     rv = []
     for f in list:
         try:
@@ -41,6 +43,11 @@ def verifyPictures(list, cwd):
         except:
             rv.append(f)
     return rv
+
+def removePictures(list, cwd):
+    """Allow user to choose files from input list to delete in CWD"""
+
+    
 
 if __name__ == '__main__':
     cwd = os.getcwd()
