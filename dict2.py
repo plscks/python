@@ -79,5 +79,10 @@ print(craft['carving knife'])
 print(craft['hatchet'])
 print(craft['sling'])
 print(craft['suit of police riot armor'])
-for f in craft:
-    print(f)
+#for f in craft:
+#    print(f)
+#partlist = list(craft.keys())
+#print(partlist)
+fullist = '\n•'.join(list(craft.keys()))
+#fullist[0] =  '•carving knife'
+print('•' + fullist)

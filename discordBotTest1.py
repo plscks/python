@@ -30,7 +30,7 @@ async def on_ready():
     print('------')
 
 @bot.command()
-async def craft(ctx, *, item):
+async def craft(ctx, *, item='list'):
     item = item.lower()
     craft = {}
     craft.setdefault('carving knife', []).append('+4xp / +2AP')
@@ -111,8 +111,6 @@ async def craft(ctx, *, item):
         cap = item.upper()
         final = '\n•'.join(craft[item])
         await ctx.send('__**' + cap + '**__\n' + final)
-    elif item == null:
-        print('No arg')
     elif item == 'list':
         print('list items')
     else:
