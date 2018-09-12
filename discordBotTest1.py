@@ -140,7 +140,7 @@ async def cat(ctx):
 
 @bot.command()
 async def info(ctx):
-    embed = discord.Embed(title="nice bot", description="A urrent work in progress.", color=0xeee657)
+    embed = discord.Embed(title="nice bot", description="A Current work in progress.", color=0xeee657)
     
     # give info about you here
     embed.add_field(name="Author", value="plscks")
