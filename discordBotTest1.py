@@ -14,13 +14,13 @@ from discord.ext import commands
 
 bot = commands.Bot(command_prefix='.', desciption='A bot that greets the user back')
 
-# Maybe? I don't know what I'm doing...
-parser = argparse.ArgumentParser('Discord Bot Test1')
-parser.add_argument('-t', '--token', help='Your bots token', action='store', dest='token')
-args = parser.parse_args()
-token = args.token
-print(token)
-
+def parse():
+    # Maybe? I don't know what I'm doing...
+    parser = argparse.ArgumentParser('Discord Bot Test1')
+    parser.add_argument('-t', '--token', help='Your bots token', action='store', dest='token')
+    args = parser.parse_args()
+    token = args.token
+    return token
 
 @bot.event
 async def on_ready():
@@ -29,10 +29,100 @@ async def on_ready():
     print(bot.user.id)
     print('------')
 
-#@bot.command()
-#async def craft(ctx, item):
+@bot.command()
+async def craft(ctx, *, item):
+    item = item.lower()
+    craft = {}
+    craft.setdefault('carving knife', []).append('+4xp / +2AP')
+    craft.setdefault('carving knife', []).append('1 Chunk of Steel')
+    craft.setdefault('chainsaw', []).append('+14xp / +7AP')
+    craft.setdefault('chainsaw', []).append('2 Chunk of Steel')
+    craft.setdefault('chainsaw', []).append('1 Length of Chain')
+    craft.setdefault('chainsaw', []).append('2 Bag of Industrial Plastic')
+    craft.setdefault('cutlass', []).append('+10xp / +5AP')
+    craft.setdefault('cutlass', []).append('2 Chunk of Steel')
+    craft.setdefault('cutlass', []).append('1 Chunk of Brass')
+    craft.setdefault('hatchet', []).append('+6xp / +3AP')
+    craft.setdefault('hatchet', []).append('1 Chunk of Iron')
+    craft.setdefault('hatchet', []).append('1 Piece of Wood')
+    craft.setdefault('rapier', []).append('+10xp / +5AP')
+    craft.setdefault('rapier', []).append('2 Chunk of Steel')
+    craft.setdefault('rapier', []).append('1 Chunk of Iron')
+    craft.setdefault('sabre', []).append('+10xp / +5AP')
+    craft.setdefault('sabre', []).append('2 Chunk of Steel')
+    craft.setdefault('sabre', []).append('1 Chunk of Iron')
+    craft.setdefault('sword', []).append('+10xp / +5AP')
+    craft.setdefault('sword', []).append('3 Chunk of Steel')
+    craft.setdefault('tarnished sword', []).append('+10xp / +5AP')
+    craft.setdefault('tarnished sword', []).append('2 Chunk of Steel')
+    craft.setdefault('tarnished sword', []).append('1 Silver Ingot')
+    craft.setdefault('torch', []).append('+8xp / +4AP')
+    craft.setdefault('torch', []).append('1 Piece of Wood')
+    craft.setdefault('torch', []).append('1 Batch of Leather')
+    craft.setdefault('torch', []).append('1 Length of Rope')
+    craft.setdefault('torch', []).append('1 Chunk of Brass')
+    craft.setdefault('chainmail shirt', []).append('+20xp / +10AP')
+    craft.setdefault('chainmail shirt', []).append('4 Chunk of Steel')
+    craft.setdefault('fireman\'s jacket', []).append('+10xp / +5AP')
+    craft.setdefault('fireman\'s jacket', []).append('2 Batch of Leather')
+    craft.setdefault('fireman\'s jacket', []).append('1 Bag of Industrial Plastic')
+    craft.setdefault('leather cuirass', []).append('+4xp / +2AP')
+    craft.setdefault('leather cuirass', []).append('3 Batch of Leather')
+    craft.setdefault('leather jacket', []).append('+4xp / +2AP')
+    craft.setdefault('leather jacket', []).append('2 Batch of Leather')
+    craft.setdefault('plate cuirass', []).append('+20xp / +10AP')
+    craft.setdefault('plate cuirass', []).append('4 Chunk of Steel')
+    craft.setdefault('plate cuirass', []).append('2 Batch of Leather')
+    craft.setdefault('suit of light body armor', []).append('+20xp / +10AP')
+    craft.setdefault('suit of light body armor', []).append('2 Batch of Leather')
+    craft.setdefault('suit of light body armor', []).append('3 Bag of Industrial Plastic')
+    craft.setdefault('suit of military encounter armor', []).append('+30xp / +15AP')
+    craft.setdefault('suit of military encounter armor', []).append('4 Bag of Industrial Plastic')
+    craft.setdefault('suit of military encounter armor', []).append('2 Batch of Leather')
+    craft.setdefault('suit of police riot armor', []).append('+20xp / +10AP')
+    craft.setdefault('suit of police riot armor', []).append('2 Batch of Leather')
+    craft.setdefault('suit of police riot armor', []).append('3 Bag of Industrial Plastic')
+    craft.setdefault('flamethrower', []).append('+16 xp / +8AP')
+    craft.setdefault('flamethrower', []).append('4 Chunk of Steel')
+    craft.setdefault('flamethrower', []).append('1 Bag of Industrial Plastic')
+    craft.setdefault('pistol', []).append('+8xp / +4AP')
+    craft.setdefault('pistol', []).append('1 Chunk of Brass')
+    craft.setdefault('pump action shotgun', []).append('+16xp / +8AP')
+    craft.setdefault('pump action shotgun', []).append('3 Chunk of Steel')
+    craft.setdefault('pump action shotgun', []).append('1 Chunk of Brass')
+    craft.setdefault('pump action shotgun', []).append('1 Piece of Wood')
+    craft.setdefault('rifle', []).append('+16xp / +8AP')
+    craft.setdefault('rifle', []).append('5 Chunk of Steel')
+    craft.setdefault('rifle', []).append('1 Chunk of Brass')
+    craft.setdefault('rifle', []).append('1 Piece of Wood')
+    craft.setdefault('sub-machine gun', []).append('+12xp / +6AP')
+    craft.setdefault('sub-machine gun', []).append('2 Chunk of Steel')
+    craft.setdefault('sub-machine gun', []).append('1 Chunk of Brass')
+    craft.setdefault('long bow', []).append('+14xp / +7AP')
+    craft.setdefault('long bow', []).append('3 Piece of Wood')
+    craft.setdefault('short bow', []).append('+6xp / +3AP')
+    craft.setdefault('short bow', []).append('1 Piece of Wood')
+    craft.setdefault('sling', []).append('+8xp / +4AP')
+    craft.setdefault('sling', []).append('2 Batch of Leather')
+    craft.setdefault('compound bow', []).append('+10xp / +5AP')
+    craft.setdefault('compound bow', []).append('2 Piece of Wood')
+    craft.setdefault('compound bow', []).append('1 Bag of Industrial Plastic')
+    if item in craft:
+        cap = item.upper()
+        final = '\n•'.join(craft[item])
+        await ctx.send('__**' + cap + '**__\n' + final)
+    elif item == null:
+        print('No arg')
+    elif item == 'list':
+        print('list items')
+    else:
+        await ctx.send('Item **' + item + '** not recognozed as craftable')
     
-    
+@bot.command()
+async def echo(ctx, *, arg):
+    await ctx.send(arg)
+    print(arg)
+
 @bot.command()
 async def add(ctx, a: int, b: int):
     await ctx.send(a+b)
@@ -76,7 +166,10 @@ async def help(ctx):
     embed.add_field(name=".cat", value="Gives a cute cat gif to lighten up the mood.", inline=False)
     embed.add_field(name=".info", value="Gives a little info about the bot", inline=False)
     embed.add_field(name=".help", value="Gives this message", inline=False)
+    embed.add_field(name=".craft", value="Gives crafting info of items, use '.craft list' to list all items", inline=False)
 
     await ctx.send(embed=embed)
 
-bot.run(token)
+if __name__ == '__main__':
+    token = parse()
+    bot.run(token)
