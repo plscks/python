@@ -19,7 +19,7 @@ parser = argparse.ArgumentParser('Discord Bot Test1')
 parser.add_argument('-t', '--token', help='Your bots token', action='store', dest='token')
 args = parser.parse_args()
 token = args.token
-print(args)
+print(token)
 
 
 @bot.event
