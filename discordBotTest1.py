@@ -112,7 +112,8 @@ async def craft(ctx, *, item='list'):
         final = '\n•'.join(craft[item])
         await ctx.send('__**' + cap + '**__\n' + final)
     elif item == 'list':
-        print('list items')
+        fulllist = '\n•'.join(list(craft.keys()))
+        await ctx.send("Use '.craft <ITEM_NAME>' to list grafting XP and requirements\n" + '__**CRAFTABLE ITEMS**__\n' + '•' + fulllist)
     else:
         await ctx.send('Item **' + item + '** not recognozed as craftable')
     
@@ -139,10 +140,10 @@ async def cat(ctx):
 
 @bot.command()
 async def info(ctx):
-    embed = discord.Embed(title="nice bot", description="Nicest bot there is ever.", color=0xeee657)
+    embed = discord.Embed(title="nice bot", description="A urrent work in progress.", color=0xeee657)
     
     # give info about you here
-    embed.add_field(name="Author", value="plscks#0156")
+    embed.add_field(name="Author", value="plscks")
     
     # Shows the number of servers the bot is member of.
     embed.add_field(name="Server count", value=f"{len(bot.guilds)}")
@@ -156,15 +157,15 @@ bot.remove_command('help')
 
 @bot.command()
 async def help(ctx):
-    embed = discord.Embed(title="nice bot", description="A Very Nice bot. List of commands are:", color=0xeee657)
+    embed = discord.Embed(title="nice bot", description="An ever evolving plscksBot. List of commands are:", color=0xeee657)
 
-    embed.add_field(name=".add X Y", value="Gives the addition of **X** and **Y**", inline=False)
-    embed.add_field(name=".multiply X Y", value="Gives the multiplication of **X** and **Y**", inline=False)
+    #embed.add_field(name=".add X Y", value="Gives the addition of **X** and **Y**", inline=False)
+    #embed.add_field(name=".multiply X Y", value="Gives the multiplication of **X** and **Y**", inline=False1)
+    embed.add_field(name=".craft", value="Gives crafting info of items, use '.craft list' to list all items", inline=False)
     embed.add_field(name=".greet", value="Gives a nice greet message", inline=False)
     embed.add_field(name=".cat", value="Gives a cute cat gif to lighten up the mood.", inline=False)
     embed.add_field(name=".info", value="Gives a little info about the bot", inline=False)
     embed.add_field(name=".help", value="Gives this message", inline=False)
-    embed.add_field(name=".craft", value="Gives crafting info of items, use '.craft list' to list all items", inline=False)
 
     await ctx.send(embed=embed)
 
