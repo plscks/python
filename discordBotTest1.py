@@ -28,7 +28,7 @@ async def on_ready():
     print(bot.user.name)
     print(bot.user.id)
     print('------')
-
+    
 @bot.command()
 async def craft(ctx, *, item='list'):
     item = item.lower()
@@ -108,15 +108,17 @@ async def craft(ctx, *, item='list'):
     craft.setdefault('compound bow', []).append('2 Piece of Wood')
     craft.setdefault('compound bow', []).append('1 Bag of Industrial Plastic')
     if item in craft:
-        cap = item.upper()
         final = '\n•'.join(craft[item])
-        await ctx.send('__**' + cap + '**__\n' + final)
+        embed = discord.Embed(title=item, description=final, color=0x00BFFF)
+        await ctx.send(embed=embed)
     elif item == 'list':
         fulllist = '\n•'.join(list(craft.keys()))
-        await ctx.send("Use '.craft <ITEM_NAME>' to list grafting XP and requirements\n" + '__**CRAFTABLE ITEMS**__\n' + '•' + fulllist)
+        embed = discord.Embed(title='Usage:', description="'.craft <ITEM_NAME>' to list rafting XP and requirements\n (must be exact item name)", color=0x00BFFF)
+        embed.add_field(name='Craftable Items:', value='•' + fulllist)
+        await ctx.send(embed=embed)
     else:
         await ctx.send('Item **' + item + '** not recognozed as craftable')
-    
+        
 @bot.command()
 async def echo(ctx, *, arg):
     await ctx.send(arg)
