@@ -134,11 +134,11 @@ async def multiply(ctx, a: int, b: int):
 
 @bot.command()
 async def greet(ctx):
-    await ctx.send(":eggplant: Why hello, there!")
+    await ctx.send(":eggplant: Why hello, there! :fORB:")
 
 @bot.command()
-async def cat(ctx):
-    await ctx.send("https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif")
+async def fORB(ctx):
+    await ctx.send("https://78.media.tumblr.com/335ffa43ca4a5e8201381912debcf880/tumblr_inline_pac9jri0Yi1vzg9ht_500.gif")
 
 @bot.command()
 async def info(ctx):
@@ -165,7 +165,7 @@ async def help(ctx):
     #embed.add_field(name=".multiply X Y", value="Gives the multiplication of **X** and **Y**", inline=False1)
     embed.add_field(name=".craft", value="Gives crafting info of items, use '.craft list' to list all items", inline=False)
     embed.add_field(name=".greet", value="Gives a nice greet message", inline=False)
-    embed.add_field(name=".cat", value="Gives a cute cat gif to lighten up the mood.", inline=False)
+    embed.add_field(name=".fORB", value="Gives a cute fORB gif to lighten up the mood???.", inline=False)
     embed.add_field(name=".info", value="Gives a little info about the bot", inline=False)
     embed.add_field(name=".help", value="Gives this message", inline=False)
 
