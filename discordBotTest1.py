@@ -134,10 +134,10 @@ async def multiply(ctx, a: int, b: int):
 
 @bot.command()
 async def greet(ctx):
-    await ctx.send(":eggplant: Why hello, there! :kitty:491077122434138124")
+    await ctx.send(":eggplant: Why hello, there! <:kitty:491077122434138124>")
 
 @bot.command()
-async def fORB(ctx):
+async def cat(ctx):
     await ctx.send("https://78.media.tumblr.com/335ffa43ca4a5e8201381912debcf880/tumblr_inline_pac9jri0Yi1vzg9ht_500.gif")
 
 @bot.command()
