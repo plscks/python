@@ -134,7 +134,7 @@ async def multiply(ctx, a: int, b: int):
 
 @bot.command()
 async def greet(ctx):
-    await ctx.send(":kitty: Why hello, there!")
+    await ctx.send(":eggplant: Why hello, there! :kitty:491077122434138124")
 
 @bot.command()
 async def fORB(ctx):
