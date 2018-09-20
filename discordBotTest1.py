@@ -1,3 +1,5 @@
+
+
 # Discord bot with discord.py test 1
 # wrtten with the assistance of:
 # https://boostlog.io/@junp1234/how-to-write-a-discord-bot-in-python-5a8e73aca7e5b7008ae1da8b
@@ -28,7 +30,23 @@ async def on_ready():
     print(bot.user.name)
     print(bot.user.id)
     print('------')
-    
+
+@bot.command()
+async def mat(ctx, *, comp='list'):
+    comp = comp.lower()
+    mats = {}
+    mats['bag of industrial plastic'] = 'Weight: 4\n+--------------------+--------+--------+-----------+\n|      Loaction      |  Find  |    %   |     %     |\n|                    | Weight | Chance | Chance/AP |\n+--------------------+--------+--------+-----------+\n| Junkyard(O)        |    4   |  10.5  |    4.74   |\n+--------------------+--------+--------+-----------+\n| Stygian Foundry(I) |   10   |   7.4  |    2.21   |\n+--------------------+--------+--------+-----------+\n| Factory(I)         |   10   |   7.3  |    2.19   |\n+--------------------+--------+--------+-----------+\n| Warehouse(I)       |    1   |   4.2  |    1.25   |\n+--------------------+--------+--------+-----------+\n'
+    if comp in mats:
+        embed = discord.Embed(title=comp, description=mats[comp], color=0x00BFFF)
+        await ctx.send(embed=embed)
+    elif comp == 'list':
+        fulllist = '\n•'.join(list(mats.keys()))
+        embed = discord.Embed(title='Usage:', description="'.craft <MATERIAL_NAME>' to list available crafting materials\n (must be exact item name)", color=0x00BFFF)
+        embed.add_field(name='Materials:', value='•' + fulllist)
+        await ctx.send(embed=embed)
+    else:
+        await ctx.send('Item **' + comp + '** not recognozed.')
+        
 @bot.command()
 async def craft(ctx, *, item='list'):
     item = item.lower()
@@ -113,7 +131,7 @@ async def craft(ctx, *, item='list'):
         await ctx.send(embed=embed)
     elif item == 'list':
         fulllist = '\n•'.join(list(craft.keys()))
-        embed = discord.Embed(title='Usage:', description="'.craft <ITEM_NAME>' to list rafting XP and requirements\n (must be exact item name)", color=0x00BFFF)
+        embed = discord.Embed(title='Usage:', description="'.craft <ITEM_NAME>' to list crafting XP and requirements\n (must be exact item name)", color=0x00BFFF)
         embed.add_field(name='Craftable Items:', value='•' + fulllist)
         await ctx.send(embed=embed)
     else:
