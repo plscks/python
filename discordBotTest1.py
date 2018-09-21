@@ -1,5 +1,3 @@
-
-
 # Discord bot with discord.py test 1
 # wrtten with the assistance of:
 # https://boostlog.io/@junp1234/how-to-write-a-discord-bot-in-python-5a8e73aca7e5b7008ae1da8b
@@ -14,7 +12,7 @@ import argparse
 import discord
 from discord.ext import commands
 
-bot = commands.Bot(command_prefix='.', desciption='A bot that greets the user back')
+bot = commands.Bot(command_prefix='.', desciption='A bot that does bot stuff maybe?')
 
 def parse():
     # Maybe? I don't know what I'm doing...
@@ -32,16 +30,185 @@ async def on_ready():
     print('------')
 
 @bot.command()
-async def mat(ctx, *, comp='list'):
+async def mats(ctx, *, comp='list'):
     comp = comp.lower()
     mats = {}
-    mats['bag of industrial plastic'] = 'Weight: 4\n+--------------------+--------+--------+-----------+\n|      Loaction      |  Find  |    %   |     %     |\n|                    | Weight | Chance | Chance/AP |\n+--------------------+--------+--------+-----------+\n| Junkyard(O)        |    4   |  10.5  |    4.74   |\n+--------------------+--------+--------+-----------+\n| Stygian Foundry(I) |   10   |   7.4  |    2.21   |\n+--------------------+--------+--------+-----------+\n| Factory(I)         |   10   |   7.3  |    2.19   |\n+--------------------+--------+--------+-----------+\n| Warehouse(I)       |    1   |   4.2  |    1.25   |\n+--------------------+--------+--------+-----------+\n'
+    mats['bag of industrial plastic'] = '''```Weight: 4\n+--------------------+--------+--------+---------+
+|                    |  Find  |    %   |    %    |
+|      Location      | Weight | Chance | chance/ |
+|                    |        |        |    AP   |
++--------------------+--------+--------+---------+
+| Junkyard(O)        |    4   |  10.5  |   4.74  |
++--------------------+--------+--------+---------+
+| Stygian Foundry(I) |   10   |   7.4  |   2.21  |
++--------------------+--------+--------+---------+
+| Factory(I)         |   10   |   7.3  |   2.19  |
++--------------------+--------+--------+---------+
+| Warehouse(I)       |    1   |   4.2  |   1.25  |
++--------------------+--------+--------+---------+```'''
+    mats['batch of leather'] = '''```Weight: 2\n+--------------------+--------+--------+---------+
+|                    |  Find  |    %   |    %    |
+|      Location      | Weight | Chance | chance/ |
+|                    |        |        |    AP   |
++--------------------+--------+--------+---------+
+| Stygian Foundry(I) |   10   |   7.4  |   2.21  |
++--------------------+--------+--------+---------+
+| Factory(I)         |   10   |   7.3  |   2.19  |
++--------------------+--------+--------+---------+```'''
+    mats['batch of mushrooms'] = '''```Weight: 1\n+-------------------+--------+--------+---------+
+|                   |  Find  |    %   |    %    |
+|      Location     | Weight | Chance | chance/ |
+|                   |        |        |    AP   |
++-------------------+--------+--------+---------+
+| Forest(O)         |   40   |  17.4  |   3.48  |
++-------------------+--------+--------+---------+
+| Idyllic Forest(O) |   40   |   14   |   2.81  |
++-------------------+--------+--------+---------+
+| Lush Orchard(O)   |    5   |  12.5  |   2.50  |
++-------------------+--------+--------+---------+
+| Ruins(O)          |   30   |  10.5  |   1.57  |
++-------------------+--------+--------+---------+
+| Grassland(O)      |    5   |   5.8  |   0.87  |
++-------------------+--------+--------+---------+
+| Field(O)          |    5   |   5.8  |   1.16  |
++-------------------+--------+--------+---------+
+| Park(O)           |    5   |   5.5  |   0.82  |
++-------------------+--------+--------+---------+
+| Orchard(O)        |    5   |   5.3  |   1.05  |
++-------------------+--------+--------+---------+
+| Maintain(O)       |    1   |    2   |   0.40  |
++-------------------+--------+--------+---------+```'''
+    mats['blood ice'] = '''```Weight: 1\nNumber of Uses: 1\nCrafted: By Defilers by using the Life Vampire skill on a victim, or by Desecrating a corpse (one of several random \n         results). Blood Ice cannot be created via Alchemical Transmutation.\nAdditional Effect: Good-aligned or Neutral-aligned characters lose 1 point of Morality with each use.\nHealing: 20 Hit Points\n+---------------------------+--------+--------+---------+
+|                           |  Find  |    %   |    %    |
+|          Location         | Weight | Chance | chance/ |
+|                           |        |        |    AP   |
++---------------------------+--------+--------+---------+
+| Dark Harem(I)             |    5   |   2.8  |   0.56  |
++---------------------------+--------+--------+---------+
+| Ebony Tower(I)            |    2   |   2.3  |   0.70  |
++---------------------------+--------+--------+---------+
+| Great Ziggurat(I)         |    5   |    2   |   0.39  |
++---------------------------+--------+--------+---------+
+| Dark Sanitarium(I)        |    1   |   0.8  |   0.17  |
++---------------------------+--------+--------+---------+
+| Black Prison(I)           |    1   |   0.6  |   0.13  |
++---------------------------+--------+--------+---------+
+| Damned Library(I)         |    1   |   0.6  |   0.22  |
++---------------------------+--------+--------+---------+
+| Hall of Reconstruction(I) |    1   |   0.5  |   0.15  |
++---------------------------+--------+--------+---------+```'''
+    mats['bottle of holy water'] = '''```Weight: 1\n+---------------------------+--------+--------+---------+
+|                           |  Find  |    %   |    %    |
+|          Location         | Weight | Chance | chance/ |
+|                           |        |        |    AP   |
++---------------------------+--------+--------+---------+
+| Euphoria Asylum(I)        |   14   |    12  |   2.39  |
++---------------------------+--------+--------+---------+
+| Church(I)                 |   20   |   8.3  |   1.65  |
++---------------------------+--------+--------+---------+
+| Vault of Enlightenment(I) |   14   |   7.4  |   2.22  |
++---------------------------+--------+--------+---------+
+| Panopticon(I)             |    5   |   4.9  |   0.98  |
++---------------------------+--------+--------+---------+
+| Ward of Respite(I)        |    5   |   3.2  |   0.96  |
++---------------------------+--------+--------+---------+```'''
+    mats['bottle of paradise water'] = '''```Weight: 1\n+---------------------------+--------+--------+---------+
+|                           |  Find  |    %   |    %    |
+|          Location         | Weight | Chance | chance/ |
+|                           |        |        |    AP   |
++---------------------------+--------+--------+---------+
+| Mill(I)                   |   15   |  42.9  |   8.57  |
++---------------------------+--------+--------+---------+
+| Ivory Tower(I)            |   10   |  13.5  |   4.05  |
++---------------------------+--------+--------+---------+
+| Panopticon(I)             |   10   |   9.8  |   1.96  |
++---------------------------+--------+--------+---------+
+| Euphoria Asylum(I)        |   10   |   8.5  |   1.71  |
++---------------------------+--------+--------+---------+
+| Vault of Enlightenment(I) |   10   |   5.3  |   1.59  |
++---------------------------+--------+--------+---------+
+| Ward of Respite(I)        |    5   |   3.2  |   0.96  |
++---------------------------+--------+--------+---------+```'''
+    mats['bunch of daisies'] = '''```Weight: 1\n+-----------------+--------+--------+---------+
+|                 |  Find  |    %   |    %    |
+|     Location    | Weight | Chance | chance/ |
+|                 |        |        |    AP   |
++-----------------+--------+--------+---------+
+| Grassland(O)    |   20   |  23.3  |   3.49  |
++-----------------+--------+--------+---------+
+| Orchard(O)      |   20   |  21.1  |   4.21  |
++-----------------+--------+--------+---------+
+| Park(O)         |   12   |  13.2  |   1.98  |
++-----------------+--------+--------+---------+
+| Lush Orchard(O) |    5   |  12.5  |   2.50  |
++-----------------+--------+--------+---------+
+| Forest(O)       |   20   |   8.7  |   1.74  |
++-----------------+--------+--------+---------+
+| Idyllic Forest  |   20   |    7   |   1.4   |
++-----------------+--------+--------+---------+
+| Mountain(O)     |    1   |    2   |   0.40  |
++-----------------+--------+--------+---------+
+| Bakery(O)       |    1   |   0.7  |   0.40  |
++-----------------+--------+--------+---------+```'''
+    mats['bunch of lilies'] = '''```Weight: 1\n+-------------------+--------+--------+---------+
+|                   |  Find  |    %   |    %    |
+|      Location     | Weight | Chance | chance/ |
+|                   |        |        |    AP   |
++-------------------+--------+--------+---------+
+| Ruins(O)          |   20   |    7   |   1.05  |
++-------------------+--------+--------+---------+
+| Park(O)           |    5   |   5.5  |   0.82  |
++-------------------+--------+--------+---------+
+| Forest(O)         |    5   |   2.2  |   0.43  |
++-------------------+--------+--------+---------+
+| Mountain(O)       |    1   |    2   |   0.40  |
++-------------------+--------+--------+---------+
+| Idyllic Forest(O) |    5   |   1.8  |   0.35  |
++-------------------+--------+--------+---------+```'''
+    mats['bunch of paradise lilies'] = '''```Weight: 1\n+----------------------+--------+--------+---------+
+|                      |  Find  |    %   |    %    |
+|       Location       | Weight | Chance | chance/ |
+|                      |        |        |    AP   |
++----------------------+--------+--------+---------+
+| Idyllic Grassland(O) |    5   |  26.3  |   3.95  |
++----------------------+--------+--------+---------+
+| Idyllic Forest(O)    |   30   |  10.5  |   2.11  |
++----------------------+--------+--------+---------+```'''
+    mats['chunk of brass'] = '''```Weight: 2\n+--------------------+--------+--------+---------+
+|                    |  Find  |    %   |    %    |
+|      Location      | Weight | Chance | chance/ |
+|                    |        |        |    AP   |
++--------------------+--------+--------+---------+
+| Smithy(I)          |   14   |  16.1  |   4.83  |
++--------------------+--------+--------+---------+
+| Stygian Foundry(I) |   20   |  14.7  |   4.41  |
++--------------------+--------+--------+---------+
+| Factory(I)         |   20   |  14.6  |   4.38  |
++--------------------+--------+--------+---------+
+| Junkyard(O)        |    4   |  10.5  |   4.74  |
++--------------------+--------+--------+---------+
+| Warehouse(I)       |    1   |   4.2  |   1.25  |
++--------------------+--------+--------+---------+```'''
+    mats['chunk of iron'] = '''```Weight: 2\n+--------------------+--------+--------+---------+
+|                    |  Find  |    %   |    %    |
+|      Location      | Weight | Chance | chance/ |
+|                    |        |        |    AP   |
++--------------------+--------+--------+---------+
+| Junkyard(O)        |    4   |  10.5  |   4.74  |
++--------------------+--------+--------+---------+
+| Warehouse(I)       |    1   |   4.2  |   1.25  |
++--------------------+--------+--------+---------+
+| Stygian Foundry(I) |    5   |   3.7  |   1.10  |
++--------------------+--------+--------+---------+
+| Factory(I)         |    5   |   3.6  |   1.09  |
++--------------------+--------+--------+---------+
+| Mountain(O)        |    1   |    2   |   0.40  |
++--------------------+--------+--------+---------+```'''
     if comp in mats:
-        embed = discord.Embed(title=comp, description=mats[comp], color=0x00BFFF)
-        await ctx.send(embed=embed)
+        await ctx.send('**' + comp + '**\n' + mats[comp])
     elif comp == 'list':
         fulllist = '\n•'.join(list(mats.keys()))
-        embed = discord.Embed(title='Usage:', description="'.craft <MATERIAL_NAME>' to list available crafting materials\n (must be exact item name)", color=0x00BFFF)
+        embed = discord.Embed(title='Usage:', description="'.mats <MATERIAL_NAME>' to list available crafting materials\n (must be exact item name)", color=0x00BFFF)
         embed.add_field(name='Materials:', value='•' + fulllist)
         await ctx.send(embed=embed)
     else:
@@ -177,11 +344,12 @@ bot.remove_command('help')
 
 @bot.command()
 async def help(ctx):
-    embed = discord.Embed(title="nice bot", description="An ever evolving plscksBot. List of commands are:", color=0xeee657)
+    embed = discord.Embed(title="__**Nexus Clash RRFBot**__", description="*An ever evolving Nexus Clash RRFBot. List of commands are:*", color=0xeee657)
 
     #embed.add_field(name=".add X Y", value="Gives the addition of **X** and **Y**", inline=False)
     #embed.add_field(name=".multiply X Y", value="Gives the multiplication of **X** and **Y**", inline=False1)
     embed.add_field(name=".craft", value="Gives crafting info of items, use '.craft list' to list all items", inline=False)
+    embed.add_field(name=".mats", value="Gives info on how to obtain crafting materials", inline=False)
     embed.add_field(name=".greet", value="Gives a nice greet message", inline=False)
     embed.add_field(name=".cat", value="Gives a cute fORB gif to lighten up the mood???.", inline=False)
     embed.add_field(name=".info", value="Gives a little info about the bot", inline=False)
