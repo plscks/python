@@ -5,6 +5,7 @@
 #
 # Crafting component screenshots from Nexus Clash wiki
 # http://wiki.nexuscla.sh/wiki/index.php?title=Crafting_Components
+#
 # Maybe this will work?
 # Uses exclusively python 3.6
 # Uses discord.py rewrite:
@@ -17,20 +18,22 @@ from discord.ext import commands
 bot = commands.Bot(command_prefix='.', desciption='A bot that does bot stuff maybe?')
 
 def parse():
-    # Maybe? I don't know what I'm doing...
+    # I don't know what I'm doing...
     parser = argparse.ArgumentParser('Discord Bot Test1')
     parser.add_argument('-t', '--token', help='Your bots token', action='store', dest='token')
     args = parser.parse_args()
     token = args.token
     return token
+    # Now I kinda know what I'm doing???
 
 @bot.event
 async def on_ready():
     print('Logged in as')
     print(bot.user.name)
     print(bot.user.id)
-    print('------')
-
+    print('------------------')
+    print('Doing RRFBot stuff')
+    
 @bot.command()
 async def mats(ctx, *, comp='list'):
     comp = comp.lower()
@@ -172,14 +175,6 @@ async def craft(ctx, *, item='list'):
 async def echo(ctx, *, arg):
     await ctx.send(arg)
     print(arg)
-
-@bot.command()
-async def add(ctx, a: int, b: int):
-    await ctx.send(a+b)
-
-@bot.command()
-async def multiply(ctx, a: int, b: int):
-    await ctx.send(a*b)
 
 @bot.command()
 async def greet(ctx):
