@@ -27,12 +27,83 @@ def parse():
     # Now I kinda know what I'm doing???
 
 @bot.event
+async def on_member_join(member):
+    await member.send("Welcome!")
+    channel = discord.utils.get(client.get_all_channels())
+    print(channel)
+
+@bot.command()
+async def chan(ctx):
+    await bot.send(discord.Object(id='481613088794083357'), 'hello')
+
+@bot.event
 async def on_ready():
     print('Logged in as')
     print(bot.user.name)
     print(bot.user.id)
     print('------------------')
     print('Doing RRFBot stuff')
+
+@bot.command()
+async def alch(ctx, *, comp='list'):
+    comp = comp.lower()
+    materials = {}
+    materials['bag of industrial plastic'] = 'Rarity: Rare'
+    materials['batch of leather'] = 'Rarity: Rare'
+    materials['batch of mushrooms'] = 'Rarity: Uncommon'
+    materials['blood ice'] = 'Rarity: Uncommon'
+    materials['bottle of holy water'] = 'Rarity: Common'
+    materials['bottle of paradise water'] = 'Rarity: Common'
+    materials['bunch of daisies'] = 'Rarity: Uncommon'
+    materials['bunch of lilies'] = 'Rarity: Rare'
+    materials['bunch of paradise lilies'] = 'Rarity: Uncommon'
+    materials['chunk of brass'] = 'Rarity: Uncommon'
+    materials['chunk of iron'] = 'Rarity: Rare'
+    materials['chunk of ivory'] = 'Rarity: Uncommon'
+    materials['chunk of onyx'] = 'Rarity: Rare'
+    materials['chunk of steel'] = 'Rarity: Common'
+    materials['chunk of stygian iron'] = 'Rarity: Common'
+    materials['femur'] = 'Rarity: Common'
+    materials['gold ingot'] = 'Rarity: Uncommon'
+    materials['handful of grave dirt'] = 'Rarity: Common'
+    materials['humerus'] = 'Rarity: Common'
+    materials['lead brick'] = 'Rarity: Uncommon'
+    materials['patch of lichen'] = 'Rarity: Uncommon'
+    materials['patch of moss'] = 'Rarity: Uncommon'
+    materials['piece of stygian coal'] = 'Rarity: Common'
+    materials['piece of wood'] = 'Rarity: Common'
+    materials['rose'] = 'Rarity: Common'
+    materials['silver ingot'] = 'Rarity: Uncommon'
+    materials['skull'] = 'Rarity: Common'
+    materials['small bottle of gunpowder'] = 'Rarity: Rare'
+    materials['soul ice'] = 'Rarity: Uncommon'
+    materials['spool of copper wire'] = 'Rarity: Rare'
+    materials['sprig of nightshade'] = 'Rarity: Rare'
+    if comp in materials:
+        embed = discord.Embed(title=comp, description=materials[comp], color=0x00BFFF)
+        await ctx.send(embed=embed)
+    elif comp == 'list':
+        fulllist = '\n•'.join(list(materials.keys()))
+        embed = discord.Embed(title='Usage:', description="'.alch <COMPONENT_NAME>' to list alchemichal rarity.\n (must be exact item name)", color=0x00BFFF)
+        embed.add_field(name='Components:', value='•' + fulllist)
+        await ctx.send(embed=embed)
+    elif comp == 'common':
+        common = [rarity for rarity,value in materials.items() if value == 'Rarity: Common']
+        shortlist = '\n•'.join(common)
+        embed = discord.Embed(title='Common Components:', description='•' + shortlist, color=0x00BFFF)
+        await ctx.send(embed=embed)
+    elif comp == 'uncommon':
+        uncommon = [rarity for rarity,value in materials.items() if value == 'Rarity: Uncommon']
+        shortlist = '\n•'.join(uncommon)
+        embed = discord.Embed(title='Uncommon Components:', description='•' + shortlist, color=0x00BFFF)
+        await ctx.send(embed=embed)
+    elif comp == 'rare':
+        rare = [rarity for rarity,value in materials.items() if value == 'Rarity: Rare']
+        shortlist = '\n•'.join(rare)
+        embed = discord.Embed(title='Rare Components:', description='•' + shortlist, color=0x00BFFF)
+        await ctx.send(embed=embed)
+    else:
+        await ctx.send('Item **' + comp + '** not recognozed.')
     
 @bot.command()
 async def mats(ctx, *, comp='list'):
