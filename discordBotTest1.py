@@ -120,7 +120,7 @@ async def alch(ctx, *, potion='list'):
     recipes.setdefault('water breathing', []).append('Fixed: Bunch of Lilies')
     if potion in recipes:
         final = '\n• '.join(recipes[potion])
-        embed = discord.Embed(title=potion.title(), description=final, color=0x00BFFF)
+        embed = discord.Embed(title=potion.title(), description='• ' + final, color=0x00BFFF)
         await ctx.send(embed=embed)
     elif potion == 'list':
         fulllist = '\n• '.join(list(recipes.keys()))
@@ -135,6 +135,7 @@ async def mats(ctx, *, comp='list'):
     comp = comp.lower()
     mats = {}
     materials = {}
+    fixed = {}
     mats['bag of industrial plastic'] = 'https://imgur.com/RAUmHsu'
     mats['batch of leather'] = 'https://imgur.com/rEYpBUS'
     mats['batch of mushrooms'] = 'https://imgur.com/YniUM42'
@@ -168,6 +169,26 @@ async def mats(ctx, *, comp='list'):
     mats['spool of copper wire'] = 'https://imgur.com/sDaBaFZ'
     mats['sprig of nightshade'] = 'https://imgur.com/ytXTMse'
     mats['stygian bone leech'] = 'https://imgur.com/A9ksCH5'
+    fixed['patch of lichen'] = 'acid affinity'
+    fixed['soul ice'] = 'cold affinity'
+    fixed['gold ingot'] = 'combat clarity'
+    fixed['sprig of nightshade'] = 'death affinity'
+    fixed['spool of copper wire'] = 'electricity affinity'
+    fixed['small bottle of gunpowder'] = 'extended invisibility'
+    fixed['chunk of brass'] = 'fire affinity'
+    fixed['silver ingot'] = 'flying'
+    fixed['chunk of iron'] = 'greater invulnerability'
+    fixed['skull'] = 'healing'
+    fixed['bunch of paradise lilies'] = 'holy affinity'
+    fixed['batch of mushrooms'] = 'invisibility'
+    fixed['lead brick'] = 'invulnerability'
+    fixed['batch of leather'] = 'lesser invulnerability'
+    fixed['chunk of onyx'] = 'magic recovery'
+    fixed['handful of grave dirt'] = 'planar protection'
+    fixed['stygian bone leech'] = 'regeneration'
+    fixed['bag of industrial plastic'] = 'strength'
+    fixed['blood ice'] = 'unholy affinity'
+    fixed['bunch of lilies'] = 'water breathing'
     materials['bag of industrial plastic'] = 'Rarity: Rare'
     materials['batch of leather'] = 'Rarity: Rare'
     materials['batch of mushrooms'] = 'Rarity: Uncommon'
@@ -202,9 +223,14 @@ async def mats(ctx, *, comp='list'):
     materials['sprig of nightshade'] = 'Rarity: Rare'
     materials['stygian bone leech'] = 'Rarity: Common'
     if comp in mats:
-        embed = discord.Embed(title=comp.title(), description=materials[comp], color=0x00BFFF)
-        embed.set_image(url=mats[comp] + '.png')
-        await ctx.send(embed=embed)
+        if comp in fixed:
+            embed = discord.Embed(title=comp.title(), description=materials[comp] + '\nFixed ingredient in Potion of ' + fixed[comp].title(), color=0x00BFFF)
+            embed.set_image(url=mats[comp] + '.png')
+            await ctx.send(embed=embed)
+        else:
+            embed = discord.Embed(title=comp.title(), description=materials[comp], color=0x00BFFF)
+            embed.set_image(url=mats[comp] + '.png')
+            await ctx.send(embed=embed)
     elif comp == 'list':
         fulllist = '\n• '.join(list(mats.keys()))
         embed = discord.Embed(title='Usage:', description="'.mats <MATERIAL_NAME>' - lists material rarity and search rates\n (must be exact item name)\nNote - Some images work very poorly, this is still a work in progress.\n\n'.mats common' - lists common materials\n'.mats uncommon' - lists uncommon materials\n'.mats rare' - lists rare materials", color=0x00BFFF)
