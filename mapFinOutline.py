@@ -36,10 +36,12 @@ def checkfiles(listOfFileToKeep):
         return finalList
 
 def findCoords(finalList):
-    equations = {0 : ['x - 2','y - 2'], 1 : ['x - 1','y - 2']} etc
+    equations = {0 : ['x - 2','y - 2'], 1 : ['x - 1','y - 2']} etc something like this? need to figure out how to evaluate equation.
     pattern = re.compile(r'(<td height).*?(<\/td>)')
     with open (inputfile, 'rt') as in_file:
-        
-    for idx, m in enumerate(re.finditer(pattern, contents)):
-        x, y = equation[idx]
-        
+        center = pull center coords
+        for idx, m in enumerate(re.finditer(pattern, contents)):
+            x, y = equation[idx]
+            
+            color1 = re.search(r'(?<=bgcolor=).*?(?=  )', m.group(0))
+            color = color1.group(0)
