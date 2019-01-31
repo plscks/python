@@ -21,7 +21,7 @@
 
 def argParse(argv):
     if no argument:
-        return file
+        return doc
     if script.js argument:
         return script
 
@@ -35,16 +35,34 @@ def checkfiles(listOfFileToKeep):
     else:
         return finalList
 
-def findCoords(finalList):
+def findCoords(finalList, type):
     equations = {0 : ['x - 2','y - 2'], 1 : ['x - 1','y - 2']} etc something like this? need to figure out how to evaluate equation.
     pattern = re.compile(r'(<td height).*?(<\/td>)')
+    infoNames = []
+    infoTypes = []
+    fileList = []
     for file in finalList:
         with open (file, 'rt') as in_file:
+            contents = in_file.read()
             center = pull center coords
+            plane = get plane
+            planeNum = assign plane number
             for idx, m in enumerate(re.finditer(pattern, contents)):
                 x, y = equation[idx]
                 tileCoords = figure coords from center point and equation
                 color1 = re.search(r'(?<=bgcolor=).*?(?=  )', m.group(0))
-                color = color1.group(0)
-                use similar to pull tile description
-            
+                tileColor = color1.group(0)
+                tileDesc = get complete litel description
+                tileName, tileType = tileDesc.split(',')
+                if type == 'names':
+                    infoNames.append('registerTileNames(' + tileCoords + ',' + planeNum + '"' + tileName + '");')
+                if type == 'types':
+                    infoTypes.append('registerTileNames(' + tileCoords + ',' + planeNum + '"' + tileType + '");')
+                if type == 'doc':
+                    fileList.append('(' + tileCoords + ' ' + plane + ')\n' + tileDesc + '\n' + color + '\n')
+    if type == 'names':
+        return infoNames
+    if type == 'types':
+        return infoTypes
+    if type == 'doc':
+        return fileList
