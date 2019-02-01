@@ -41,6 +41,8 @@ def findCoords(finalList, type):
     infoNames = []
     infoTypes = []
     fileList = []
+    seen = set()
+    seen_add = seen.add
     for file in finalList:
         with open (file, 'rt') as in_file:
             contents = in_file.read()
@@ -59,10 +61,21 @@ def findCoords(finalList, type):
                 if type == 'types':
                     infoTypes.append('registerTileNames(' + tileCoords + ',' + planeNum + '"' + tileType + '");')
                 if type == 'doc':
-                    fileList.append('(' + tileCoords + ' ' + plane + ')\n' + tileDesc + '\n' + color + '\n')
+                    fileList.append('(' + tileCoords + ' ' + plane + ')\n' + tileDesc + '\n' + color + '\n' + '\n')
     if type == 'names':
-        return infoNames
+        infoNamesClean = [x for x in infoNames if not (x in seen or seen_add(x))]
+        return infoNamesClean
     if type == 'types':
-        return infoTypes
+        infoTypesClean = [x for x in infoTypes if not (x in seen or seen_add(x))]
+        return infoTypesClean
     if type == 'doc':
-        return fileList
+        fileListClean = [x for x in fileList if not (x in seen or seen_add(x))]
+        return fileListClean
+    
+def fileOut(fileListClean):
+    with open('tileInfoList.txt', 'w') as out:
+        for tileInfo in fileListClean:
+            out.write(tileInfo)
+
+def scriptOut(info):
+    
