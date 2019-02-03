@@ -12,7 +12,7 @@
 ## Stuff I'd like it to do: ##
 ##############################
 #
-# [] - Have command line args for output to file or modify script.js or output to file as array
+# [X] - Have command line args for output to file or modify script.js or output to file as array
 # [] - Search current directory for html files
 # [] - Check that they are html data if not, record offending file
 # [] - Locate coordinate & plane of center tile in one file
