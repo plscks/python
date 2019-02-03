@@ -11,6 +11,18 @@
 # Uses discord.py rewrite:
 # python -m pip install -U https://github.com/Rapptz/discord.py/archive/rewrite.zip
 # Good luck!!
+#
+#
+#
+########################
+## STUFF TO IMPLEMENT ##
+########################
+#
+# [] - Assign and remove  select roles based on commands
+# [] - SM timer that will ping Medic role
+# [] - Setable raid reminder command
+# [] - Creepier cat gif for Samus
+#
 import argparse
 import discord
 from discord.ext import commands
