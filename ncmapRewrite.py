@@ -16,6 +16,7 @@
 # [] - Search current directory for html files
 # [] - Check that they are html data if not, record offending file
 # [] - Locate coordinate & plane of center tile in one file
+# [] - Be able to handle more than 3 planes
 # [] - find map data, pull tile color and description and figure coordinates based on center coordinate
 # [] - load coordinate, description, and color from each file into a master list
 # [] - Once done with all files, check master list for duplicates and remove.
@@ -64,11 +65,26 @@ def parse():
         return out
 
 def readFiles(cwd):
-    """Read files in current directory and create a list of all .html files"""
+    """Read files in current directory, create a list of all .html files, and then verify they are the proper files"""
 
-    
+    files = [f for f in listdir(cwd) if isfile(join(cwd, f))]
+    allFiles = []
+    keep = []
+    htmlRemove = []
+    for item in files:
+        if item.endswith('.html'):
+            allFiles.append(item)
+    #
+    # Throws error, need exception handling.
+    #
+    for file in allFiles:
+        with open (file, 'rt') as in_file:
+            contents = in_file.read()
+            isHtml1 = re.search(r'<!-- saved from url=', contents)
+            isHtml = isHtml1.group(0)
+            print(isHtml)
     
 if __name__ == "__main__":
     kind, plane = parse()
     cwd = os.getcwd()
-    htmlRough = readFiles(cwd)
+    htmlFileList = readFiles(cwd)
