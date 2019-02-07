@@ -13,8 +13,8 @@
 ##############################
 #
 # [X] - Have command line args for output to file or modify script.js or output to file as array
-# [] - Search current directory for html files
-# [] - Check that they are html data if not, record offending file
+# [X] - Search current directory for html files
+# [X] - Check that they are corect html data if not, record offending file
 # [] - Locate coordinate & plane of center tile in one file
 # [] - Be able to handle more than 3 planes
 # [] - find map data, pull tile color and description and figure coordinates based on center coordinate
@@ -74,17 +74,21 @@ def readFiles(cwd):
     for item in files:
         if item.endswith('.html'):
             allFiles.append(item)
-    #
-    # Throws error, need exception handling.
-    #
-    for file in allFiles:
-        with open (file, 'rt') as in_file:
-            contents = in_file.read()
-            isHtml1 = re.search(r'<!-- saved from url=', contents)
-            isHtml = isHtml1.group(0)
-            print(isHtml)
+    for htmlFile in allFiles:
+        with open (htmlFile, 'rt') as in_file:
+            try:
+                contents = in_file.read()
+                isCorrect1 = re.search(r'\d{1,2}\, \d{1,2}(?= \w)', contents)
+                isCorrect = isCorrect1.group(0)
+                keep.append(htmlFile)
+            except UnicodeDecodeError:
+                pass
+            except AttributeError:
+                pass
+    return keep
     
 if __name__ == "__main__":
     kind, plane = parse()
     cwd = os.getcwd()
     htmlFileList = readFiles(cwd)
+    print(htmlFileList)
