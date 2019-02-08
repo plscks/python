@@ -5,7 +5,7 @@
 # Google Sheets importable array in a text file, to use a spreadsheet as a map
 # And able to be directly imported into the HYPERMAP script.js for production use
 #
-# This is very much a work in porogress
+# This is very much a work in progress
 # Written by plscks in python 3.7
 #
 ##############################
@@ -15,9 +15,9 @@
 # [X] - Have command line args for output to file or modify script.js or output to file as array
 # [X] - Search current directory for html files
 # [X] - Check that they are corect html data if not, record offending file
-# [] - Locate coordinate & plane of center tile in one file
-# [] - Be able to handle more than 3 planes
-# [] - find map data, pull tile color and description and figure coordinates based on center coordinate
+# [] - Locate coordinate of center tile in one file
+# [X] - Be able find and  handle more than 3 planes
+# [] - find map data; pull tile color and description and figure coordinates based on center coordinate
 # [] - load coordinate, description, and color from each file into a master list
 # [] - Once done with all files, check master list for duplicates and remove.
 # [] - Output master list as a seperate file
@@ -36,6 +36,7 @@
 #    -a        Output as array of correctly organized values for importing to sheets spread sheet
 #
 import argparse
+from collections import OrderedDict
 import os
 from os import listdir
 from os.path import isfile, join
@@ -70,7 +71,6 @@ def readFiles(cwd):
     files = [f for f in listdir(cwd) if isfile(join(cwd, f))]
     allFiles = []
     keep = []
-    htmlRemove = []
     for item in files:
         if item.endswith('.html'):
             allFiles.append(item)
@@ -86,9 +86,59 @@ def readFiles(cwd):
             except AttributeError:
                 pass
     return keep
+
+def mainData(rawData, reqPlane, reqKind):
+    """Main file operations start here and are deligated out to different functions"""
     
+    for html in rawData:
+        with open (html, 'rt') as in_file:
+            contents = in_file.read()
+            try:
+                planeInfo = collectPlane(reqPlane, contents)
+                planeName =  list(planeInfo.values())[0]
+                planeNum = list(planeInfo.keys())[0]
+                # print('PLANE NAME: ' + planeName + '\n' + 'PLANE NUMBER: ' + str(planeNum))
+            except AttributeError:
+                pass
+
+def collectCenter(contents):
+    """Collects the center coordinate of the file that is opened"""
+    
+    pass
+    
+def collectPlane(reqPlane, contents):
+    """Collects the plane information and adds planes if they are in the data but not known"""
+    
+    planeInfo = {}
+    newPlane = OrderedDict()
+    newPlane['laurentia'] = 0
+    newPlane['elysium'] = 1
+    newPlane['stygia'] = 2
+    try:
+        planeRaw = re.search(r'(?<=\d ).*(?=, a <a)', contents)
+        plane = planeRaw.group(0)
+        pass
+    except AttributeError:
+        planeRaw = re.search(r'(?<=\d ).*(?=, an <a)', contents)
+        plane = planeRaw.group(0)
+        pass
+    if reqPlane == plane.lower() or reqPlane == 'all':
+        if plane.lower() in newPlane:
+            planeNum = newPlane[plane.lower()]
+        else:
+            allPlanes = list(newPlane.items())
+            junk, new = allPlanes[-1]
+            new = new + 1
+            newPlane[plane.lower()] = new
+            planeNum = newPlane[plane.lower()]
+        planeInfo[planeNum] = plane
+        return planeInfo
+    else:
+        pass
+                
 if __name__ == "__main__":
     kind, plane = parse()
     cwd = os.getcwd()
     htmlFileList = readFiles(cwd)
     print(htmlFileList)
+    mainData(htmlFileList, plane, kind)
