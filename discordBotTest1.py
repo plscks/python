@@ -24,6 +24,7 @@
 # [] - Creepier cat gif for Samus
 #
 import argparse
+import asyncio
 import discord
 from discord.ext import commands
 
@@ -288,7 +289,7 @@ async def craft(ctx, *, item='list'):
     craft.setdefault('sabre', []).append('+10xp / +5AP')
     craft.setdefault('sabre', []).append('2 Chunk of Steel')
     craft.setdefault('sabre', []).append('1 Chunk of Iron')
-    craft.setdefault('sword', []).append('+10xp / +5AP')
+    Craft.setdefault('sword', []).append('+10xp / +5AP')
     craft.setdefault('sword', []).append('3 Chunk of Steel')
     craft.setdefault('tarnished sword', []).append('+10xp / +5AP')
     craft.setdefault('tarnished sword', []).append('2 Chunk of Steel')
@@ -361,6 +362,19 @@ async def echo(ctx, *, arg):
     await ctx.send(arg)
     print(arg)
 
+@bot.command()
+async def sm(ctx, *, time='help'):
+    author = ctx.message.author
+    print(author)
+    if time == 'help':
+        embed = discord.Embed(title='Usage:', description="'.sm <TIME IN MINUTES>' to set a timer for SM to ping once up", color=0x00BFFF)
+        await ctx.send(embed=embed)
+    else:
+        await ctx.send('Sorcerers Might alert set for ' + time + ' minutes!')
+        time = (int(time) * 60) - 60
+        await asyncio.sleep(time)
+        await ctx.send('@Medic, @' +  + ' is off of Sorcerers Might in about 1 minute!')
+        
 @bot.command()
 async def greet(ctx):
     await ctx.send(":eggplant: Why hello, there! <:kitty:491077122434138124>")
