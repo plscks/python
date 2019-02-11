@@ -19,13 +19,15 @@
 ########################
 #
 # [] - Assign and remove  select roles based on commands
-# [] - SM timer that will ping Medic role
+# [X] - SM timer that will ping Medic role
 # [] - Setable raid reminder command
 # [] - Creepier cat gif for Samus
 #
 import argparse
 import asyncio
 import discord
+from discord import Guild
+from discord import Role
 from discord.ext import commands
 
 bot = commands.Bot(command_prefix='.', desciption='A bot that does bot stuff maybe?')
@@ -365,15 +367,26 @@ async def echo(ctx, *, arg):
 @bot.command()
 async def sm(ctx, *, time='help'):
     author = ctx.message.author
-    print(author)
-    if time == 'help':
-        embed = discord.Embed(title='Usage:', description="'.sm <TIME IN MINUTES>' to set a timer for SM to ping once up", color=0x00BFFF)
-        await ctx.send(embed=embed)
-    else:
+    role =  discord.utils.get(ctx.guild.roles,id=541347064001331201)
+    try:
+        test = int(time) + 1
+        if int(time) < 0:
+            await ctx.send('Use a real, positive number of minutes please.')
+            return
         await ctx.send('Sorcerers Might alert set for ' + time + ' minutes!')
         time = (int(time) * 60) - 60
         await asyncio.sleep(time)
-        await ctx.send('@Medic, @' +  + ' is off of Sorcerers Might in about 1 minute!')
+        if author.nick == None:
+            sep = '#'
+            nick = str(author)
+            nick = nick.split(sep, 1)[0]
+            await ctx.send(role.mention + ': ' + nick + ' is off of Sorcerers Might in about 1 minute!')
+        else:
+            await ctx.send(role.mention + ': ' + author.nick + ' is off of Sorcerers Might in about 1 minute!')
+
+    except ValueError:
+        embed = discord.Embed(title='Usage:', description="'.sm <TIME IN MINUTES>' to set a timer for SM to ping once up", color=0x00BFFF)
+        await ctx.send(embed=embed)
         
 @bot.command()
 async def greet(ctx):
@@ -381,7 +394,7 @@ async def greet(ctx):
 
 @bot.command()
 async def cat(ctx):
-    await ctx.send("https://78.media.tumblr.com/335ffa43ca4a5e8201381912debcf880/tumblr_inline_pac9jri0Yi1vzg9ht_500.gif")
+    await ctx.send("http://www.animalslook.com/media/loki-is-one-scary-cat-10-pictures/loki-is-one-scary-cat-10-pictures-1.jpg")
 
 @bot.command()
 async def info(ctx):
@@ -406,6 +419,7 @@ async def help(ctx):
 
     #embed.add_field(name=".add X Y", value="Gives the addition of **X** and **Y**", inline=False)
     #embed.add_field(name=".multiply X Y", value="Gives the multiplication of **X** and **Y**", inline=False1)
+    embed.add_field(name=".sm", value="Sets a timer for Sorcerers Might, and alerts Medic role when about up.", inline=False)
     embed.add_field(name=".craft", value="Gives crafting info of items.", inline=False)
     embed.add_field(name=".mats", value="Gives materials search rates and rarity.", inline=False)
     embed.add_field(name=".alch", value="Gives potion recipe ratios.", inline=False)
