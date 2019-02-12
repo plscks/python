@@ -373,6 +373,8 @@ async def sm(ctx, *, time='help'):
         if int(time) < 0:
             await ctx.send('Use a real, positive number of minutes please.')
             return
+        elif int(time) > 90:
+            await ctx.send('Use a real, positive number of minutes please.')
         await ctx.send('Sorcerers Might alert set for ' + time + ' minutes!')
         time = (int(time) * 60) - 60
         await asyncio.sleep(time)
@@ -390,7 +392,7 @@ async def sm(ctx, *, time='help'):
         
 @bot.command()
 async def greet(ctx):
-    await ctx.send(":eggplant: Why hello, there! <:kitty:491077122434138124>")
+    await ctx.send(":thonk: Why hello, there! <:kitty:491077122434138124>")
 
 @bot.command()
 async def cat(ctx):
