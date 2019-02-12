@@ -375,6 +375,7 @@ async def sm(ctx, *, time='help'):
             return
         elif int(time) > 90:
             await ctx.send('Use a real, positive number of minutes please.')
+            return
         await ctx.send('Sorcerers Might alert set for ' + time + ' minutes!')
         time = (int(time) * 60) - 60
         await asyncio.sleep(time)
