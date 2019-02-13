@@ -364,8 +364,12 @@ async def echo(ctx, *, arg):
     await ctx.send(arg)
     print(arg)
 
-@bot.command()
-async def sm(ctx, *, time='help'):
+@bot.command(pass_context=True)
+async def sm(ctx):
+    task = bot.loop.create_task(smtimer(ctx))
+    return task
+    
+async def smtimer(ctx, *, time='help'):
     author = ctx.message.author
     role =  discord.utils.get(ctx.guild.roles,id=541347064001331201)
     try:
@@ -376,6 +380,10 @@ async def sm(ctx, *, time='help'):
         elif int(time) > 90:
             await ctx.send('Use a real, positive number of minutes please.')
             return
+        elif int(time) == 0:
+             task.cancel()
+             task = None
+             return task
         await ctx.send('Sorcerers Might alert set for ' + time + ' minutes!')
         time = (int(time) * 60) - 60
         await asyncio.sleep(time)
