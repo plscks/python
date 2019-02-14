@@ -364,12 +364,8 @@ async def echo(ctx, *, arg):
     await ctx.send(arg)
     print(arg)
 
-@bot.command(pass_context=True)
-async def sm(ctx):
-    task = bot.loop.create_task(smtimer(ctx))
-    return task
-    
-async def smtimer(ctx, *, time='help'):
+@bot.command()
+async def sm(ctx, *, time='help'):
     author = ctx.message.author
     role =  discord.utils.get(ctx.guild.roles,id=541347064001331201)
     try:
@@ -381,19 +377,18 @@ async def smtimer(ctx, *, time='help'):
             await ctx.send('Use a real, positive number of minutes please.')
             return
         elif int(time) == 0:
-             task.cancel()
-             task = None
-             return task
-        await ctx.send('Sorcerers Might alert set for ' + time + ' minutes!')
+             await ctx.send('That doesn\'t work yet!')
+             return
+        await ctx.send(f'Sorcerers Might alert set for {time} minutes!')
         time = (int(time) * 60) - 60
         await asyncio.sleep(time)
         if author.nick == None:
             sep = '#'
             nick = str(author)
             nick = nick.split(sep, 1)[0]
-            await ctx.send(role.mention + ': ' + nick + ' is off of Sorcerers Might in about 1 minute!')
+            await ctx.send(f'{role.mention}: {nick} is off of Sorcerers Might in about 1 minute!')
         else:
-            await ctx.send(role.mention + ': ' + author.nick + ' is off of Sorcerers Might in about 1 minute!')
+            await ctx.send(f'{role.mention}: {author.nick} is off of Sorcerers Might in about 1 minute!')
 
     except ValueError:
         embed = discord.Embed(title='Usage:', description="'.sm <TIME IN MINUTES>' to set a timer for SM to ping once up", color=0x00BFFF)
