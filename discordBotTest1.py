@@ -31,6 +31,7 @@ from discord import Role
 from discord.ext import commands
 
 bot = commands.Bot(command_prefix='.', desciption='A bot that does bot stuff maybe?')
+client = discord.Client()
 
 def parse():
     # I don't know what I'm doing...
@@ -135,15 +136,15 @@ async def alch(ctx, *, potion='list'):
     recipes.setdefault('water breathing', []).append('Fixed: Bunch of Lilies')
     if potion in recipes:
         final = '\n• '.join(recipes[potion])
-        embed = discord.Embed(title=potion.title(), description='• ' + final, color=0x00BFFF)
+        embed = discord.Embed(title=potion.title(), description=f'• {final}', color=0x00BFFF)
         await ctx.send(embed=embed)
     elif potion == 'list':
         fulllist = '\n• '.join(list(recipes.keys()))
         embed = discord.Embed(title='Usage:', description="'.alch <POTION_NAME>' to list ratio of components for potions\n (must be exact item name)", color=0x00BFFF)
-        embed.add_field(name='Potions:', value='• ' + fulllist)
+        embed.add_field(name='Potions:', value=f'• {fulllist}')
         await ctx.send(embed=embed)
     else:
-        await ctx.send('Potion **' + potion + '** not recognozed.')
+        await ctx.send(f'Potion **{potion}** not recognozed.')
     
 @bot.command()
 async def mats(ctx, *, comp='list'):
@@ -254,20 +255,20 @@ async def mats(ctx, *, comp='list'):
     elif comp == 'common':
         common = [rarity for rarity,value in materials.items() if value == 'Rarity: Common']
         shortlist = '\n• '.join(common)
-        embed = discord.Embed(title='Common Components:', description='• ' + shortlist, color=0x00BFFF)
+        embed = discord.Embed(title='Common Components:', description=f'• {shortlist}', color=0x00BFFF)
         await ctx.send(embed=embed)
     elif comp == 'uncommon':
         uncommon = [rarity for rarity,value in materials.items() if value == 'Rarity: Uncommon']
         shortlist = '\n• '.join(uncommon)
-        embed = discord.Embed(title='Uncommon Components:', description='• ' + shortlist, color=0x00BFFF)
+        embed = discord.Embed(title='Uncommon Components:', description=f'• {shortlist}', color=0x00BFFF)
         await ctx.send(embed=embed)
     elif comp == 'rare':
         rare = [rarity for rarity,value in materials.items() if value == 'Rarity: Rare']
         shortlist = '\n• '.join(rare)
-        embed = discord.Embed(title='Rare Components:', description='• ' + shortlist, color=0x00BFFF)
+        embed = discord.Embed(title='Rare Components:', description=f'• {shortlist}', color=0x00BFFF)
         await ctx.send(embed=embed)    
     else:
-        await ctx.send('Item **' + comp + '** not recognozed.')
+        await ctx.send(f'Item **{comp}** not recognozed.')
     
 @bot.command()
 async def craft(ctx, *, item='list'):
@@ -354,10 +355,10 @@ async def craft(ctx, *, item='list'):
     elif item == 'list':
         fulllist = '\n• '.join(list(craft.keys()))
         embed = discord.Embed(title='Usage:', description="'.craft <ITEM_NAME>' to list crafting XP and requirements\n (must be exact item name)", color=0x00BFFF)
-        embed.add_field(name='Craftable Items:', value='• ' + fulllist)
+        embed.add_field(name='Craftable Items:', value=f'• {fulllist}')
         await ctx.send(embed=embed)
     else:
-        await ctx.send('Item **' + item + '** not recognozed as craftable')
+        await ctx.send(f'Item **{item}** not recognozed as craftable')
         
 @bot.command()
 async def echo(ctx, *, arg):
@@ -389,10 +390,24 @@ async def sm(ctx, *, time='help'):
             await ctx.send(f'{role.mention}: {nick} is off of Sorcerers Might in about 1 minute!')
         else:
             await ctx.send(f'{role.mention}: {author.nick} is off of Sorcerers Might in about 1 minute!')
-
     except ValueError:
         embed = discord.Embed(title='Usage:', description="'.sm <TIME IN MINUTES>' to set a timer for SM to ping once up", color=0x00BFFF)
         await ctx.send(embed=embed)
+
+async def my_background_task():
+    await client.wait_until_ready()
+    counter = 0
+    channel = discord.Object(id='545312880162111513')
+    await ctx.send('doing stuff out of while not')
+    while not client.is_closed:
+        counter += 1
+        await client.send_message(channel, counter)
+        await ctx.send('doing stuff in while not?')
+        await asyncio.sleep(60) # task runs every 60 seconds
+
+@bot.command()
+async def bgtask(ctx):
+    client.loop.create_task(my_background_task())
         
 @bot.command()
 async def greet(ctx):
