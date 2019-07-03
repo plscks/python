@@ -27,7 +27,27 @@
 # https://www.nexusclash.com
 # https://www.nexusclash.com/modules.php?name=Character&charname=[NAME GOES HERE]&format=json
 # ----> Uses '%20' as a space
-# Following this kivy guide: https://likegeeks.com/kivy-tutorial/
+# Following this kivy guide: https://kivy.org/doc/stable/guide/basic.html
+# https://techwithtim.net/tutorials/kivy-tutorial/example-gui/
 #
 # ONWARDS!!
+import kivy
 from kivy.app import App
+from kivy.uix.label import Label
+from kivy.uix.gridlayout import GridLayout
+from kivy.uix.textinput import TextInput
+from kivy.uix.button import Button
+from kivy.uix.widget import Widget
+
+
+class MyGrid(Widget):
+    pass
+
+
+class charlookup(App): # <- Main Class
+    def build(self):
+        return MyGrid()
+
+
+if __name__ == "__main__":
+    charlookup().run()
