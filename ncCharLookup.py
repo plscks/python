@@ -30,20 +30,52 @@
 # Following this Tkinter guide https://www.python-course.eu/tkinter_entry_widgets.php
 #
 # ONWARDS!!
+import requests
 import tkinter as tk
+import webbrowser
 
 
-def testing(text):
-    print('Button clicked!')
-    print(text)
+class MainApplication(tk.Frame):
+    def __init__(self, parent, *args, **kwargs):
+        tk.Frame.__init__(self, parent, *args, **kwargs)
+        self.parent = parent
 
+        tk.Label(self, text='Character Name: ').grid(row=2, column=0)
+        charName = tk.StringVar()
+        e1 = tk.Entry(self, textvariable=charName).grid(row=2, column=1)
+        lookupBtn = tk.Button(self, text='Lookup', width=6, command=lambda: self.infoGather(charName.get()))
+        lookupBtn.grid(row=2, column=2)
+        exit = tk.Button(self, text='QUIT', width=20, command=root.destroy).grid(row=8, column=2)
 
-root = tk.Tk()
-root.title('Counting Seconds')
-fieldName = tk.Label(root, text='Character Name: ').grid(row=2, column=0)
-charName = tk.StringVar()
-e1 = tk.Entry(root, textvariable=charName).grid(row=2, column=1)
-button = tk.Button(root, text='Lookup', width=20, command=lambda: testing(charName.get()))
-button.grid(row=2, column=2)
-exit = tk.Button(root, text='QUIT', width=20, command=root.destroy).grid(row=3, column=1)
-root.mainloop()
+    def infoGather(self, inName):
+        print('Gathering info.....')
+        inName.replace(' ', '%20')
+        response = requests.get('https://www.nexusclash.com/modules.php?name=Character&charname=' + str(inName) + '&format=json')
+        data = response.json()
+
+        tk.Label(self, text='Character Name: ').grid(row=5, column=0, sticky=tk.E)
+        collectedName = tk.StringVar()
+        collectedName.set(data['result']['character']['name']['name'])
+        charNamePanel = tk.Entry(self, state='readonly', readonlybackground='white', fg='black')
+        charNamePanel.config(textvariable=collectedName, relief='flat')
+        charNamePanel.grid(row=5, column=1, columnspan=2)
+
+        tk.Label(self, text='Character ID: ').grid(row=6, column=0, sticky=tk.W)
+        collectedID = tk.StringVar()
+        collectedID.set(data['result']['character']['id'])
+        charIDPanel = tk.Entry(self, state='readonly', readonlybackground='white', fg='black')
+        charIDPanel.config(textvariable=collectedID, relief='flat')
+        charIDPanel.grid(row=6, column=1, columnspan=2)
+
+        profileBtn = tk.Label(self, text="profile", fg="blue", cursor="hand2")
+        profileBtn.bind('<Button-1>', lambda e: self.callback('https://www.nexusclash.com/modules.php?name=Game&op=character&id=' + str(data['result']['character']['id'])))
+        profileBtn.grid(row=7, column=2)
+
+    def callback(self, url):
+        webbrowser.open_new(url)
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    root.title('Nexus Clash Character Profile Lookup')
+    MainApplication(root).pack(side="top", fill="both", expand=True)
+    root.mainloop()
