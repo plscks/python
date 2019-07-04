@@ -9,7 +9,7 @@
 #################
 ## TO DO LIST  ##
 #################
-# [] Use Kivy to make a GUI that is cross compatable
+# [] Use Tkinter to make a GUI that is cross compatable
 # [] Hook into NC charater profile API
 # [] Have a text field to type a name
 # [] Lookup data and get json
@@ -27,27 +27,30 @@
 # https://www.nexusclash.com
 # https://www.nexusclash.com/modules.php?name=Character&charname=[NAME GOES HERE]&format=json
 # ----> Uses '%20' as a space
-# Following this kivy guide: https://kivy.org/doc/stable/guide/basic.html
-# https://techwithtim.net/tutorials/kivy-tutorial/example-gui/
+# Following this Tkinter guide https://www.python-course.eu/tkinter_entry_widgets.php
 #
 # ONWARDS!!
-import kivy
-from kivy.app import App
-from kivy.uix.label import Label
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.textinput import TextInput
-from kivy.uix.button import Button
-from kivy.uix.widget import Widget
+import tkinter as tk
 
+counter = 0
+def counter_label(label):
+  def count():
+    global counter
+    counter += 1
+    label.config(text=str(counter))
+    label.after(1000, count)
+  count()
 
-class MyGrid(Widget):
-    pass
+def testing(text):
+    print('Button clicked!')
+    print(text)
 
-
-class charlookup(App): # <- Main Class
-    def build(self):
-        return MyGrid()
-
-
-if __name__ == "__main__":
-    charlookup().run()
+root = tk.Tk()
+root.title('Counting Seconds')
+fieldName = tk.Label(root, text='Character Name: ').grid(row=2, column=0)
+charName = tk.StringVar()
+e1 = tk.Entry(root, textvariable=charName).grid(row=2, column=1)
+button = tk.Button(root, text='Lookup', width=20, command=lambda: testing(charName.get()))
+button.grid(row=2, column=2)
+exit = tk.Button(root, text='QUIT', width=20, command=root.destroy).grid(row=3, column=1)
+root.mainloop()
