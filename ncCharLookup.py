@@ -51,7 +51,6 @@ class MainApplication(tk.Frame):
         exit = tk.Button(self, text='QUIT', width=20, command=root.destroy).grid(row=18, column=2)
 
     def infoGather(self, inName):
-        print('Gathering info.....')
         inName.replace(' ', '%20')
         response = requests.get('https://www.nexusclash.com/modules.php?name=Character&charname=' + str(inName) + '&format=json')
         data = response.json()
