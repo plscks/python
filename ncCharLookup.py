@@ -73,7 +73,7 @@ class MainApplication(tk.Frame):
         profileBtn.bind('<Button-1>', lambda e: self.callback('https://www.nexusclash.com/modules.php?name=Game&op=character&id=' + str(data['result']['character']['id'])))
         profileBtn.grid(row=5, column=2)
 
-        URL = data['result']['character']['avatar']['url']
+        URL = data['result']['character']['avatar']['url'].replace(' ', '%20')
         u = urlopen(URL)
         raw_data = u.read()
         u.close()
@@ -85,7 +85,7 @@ class MainApplication(tk.Frame):
         photo = ImageTk.PhotoImage(im)
         avatar = tk.Canvas(self, width = 250, height = 250)
         avatar.image = photo
-        avatar.create_image(0, 127, anchor=tk.W, image=photo)
+        avatar.create_image(5, 127, anchor=tk.W, image=photo)
         avatar.grid(row=3, rowspan=15, column=0)
 
 
