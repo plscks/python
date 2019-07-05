@@ -9,16 +9,16 @@
 #################
 ## TO DO LIST  ##
 #################
-# [] Use Tkinter to make a GUI that is cross compatable
-# [] Hook into NC charater profile API
-# [] Have a text field to type a name
-# [] Lookup data and get json
-# [] Parse json into readable format and display in copy/pastable format
+# [x] Use Tkinter to make a GUI that is cross compatable
+# [X] Hook into NC charater profile API
+# [X] Have a text field to type a name
+# [X] Lookup data and get json
+# [X] Parse json into readable format and display in copy/pastable format
 # [] Actually show faction name
-# [] Actually show avatar
+# [X] Actually show avatar
 # [] List how many exploration badges they have and how many remain to be gotten
 # [] List which stat grinds they have completed
-# [] write program like a real program and not in dumb testing segments
+# [x] write program like a real program and not in dumb testing segments
 # [] If need to do testing, clear it out and refactor
 #
 ####################
@@ -30,8 +30,11 @@
 # Following this Tkinter guide https://www.python-course.eu/tkinter_entry_widgets.php
 #
 # ONWARDS!!
+from PIL import ImageTk,Image
 import requests
 import tkinter as tk
+from urllib.request import urlopen
+from io import BytesIO
 import webbrowser
 
 
@@ -45,7 +48,7 @@ class MainApplication(tk.Frame):
         e1 = tk.Entry(self, textvariable=charName).grid(row=2, column=1)
         lookupBtn = tk.Button(self, text='Lookup', width=6, command=lambda: self.infoGather(charName.get()))
         lookupBtn.grid(row=2, column=2)
-        exit = tk.Button(self, text='QUIT', width=20, command=root.destroy).grid(row=8, column=2)
+        exit = tk.Button(self, text='QUIT', width=20, command=root.destroy).grid(row=18, column=2)
 
     def infoGather(self, inName):
         print('Gathering info.....')
@@ -53,23 +56,39 @@ class MainApplication(tk.Frame):
         response = requests.get('https://www.nexusclash.com/modules.php?name=Character&charname=' + str(inName) + '&format=json')
         data = response.json()
 
-        tk.Label(self, text='Character Name: ').grid(row=5, column=0, sticky=tk.E)
+        tk.Label(self, text='Character Name: ').grid(row=3, column=1, sticky=tk.E)
         collectedName = tk.StringVar()
         collectedName.set(data['result']['character']['name']['name'])
         charNamePanel = tk.Entry(self, state='readonly', readonlybackground='white', fg='black')
         charNamePanel.config(textvariable=collectedName, relief='flat')
-        charNamePanel.grid(row=5, column=1, columnspan=2)
+        charNamePanel.grid(row=3, column=2, columnspan=2)
 
-        tk.Label(self, text='Character ID: ').grid(row=6, column=0, sticky=tk.W)
+        tk.Label(self, text='Character ID: ').grid(row=4, column=1, sticky=tk.E)
         collectedID = tk.StringVar()
         collectedID.set(data['result']['character']['id'])
         charIDPanel = tk.Entry(self, state='readonly', readonlybackground='white', fg='black')
         charIDPanel.config(textvariable=collectedID, relief='flat')
-        charIDPanel.grid(row=6, column=1, columnspan=2)
+        charIDPanel.grid(row=4, column=2, columnspan=2)
 
         profileBtn = tk.Label(self, text="profile", fg="blue", cursor="hand2")
         profileBtn.bind('<Button-1>', lambda e: self.callback('https://www.nexusclash.com/modules.php?name=Game&op=character&id=' + str(data['result']['character']['id'])))
-        profileBtn.grid(row=7, column=2)
+        profileBtn.grid(row=5, column=2)
+
+        URL = data['result']['character']['avatar']['url']
+        u = urlopen(URL)
+        raw_data = u.read()
+        u.close()
+        im = Image.open(BytesIO(raw_data))
+        if im.width <= 250:
+            pass
+        else:
+            im = im.resize((240, 240), Image.ANTIALIAS)
+        photo = ImageTk.PhotoImage(im)
+        avatar = tk.Canvas(self, width = 250, height = 250)
+        avatar.image = photo
+        avatar.create_image(0, 127, anchor=tk.W, image=photo)
+        avatar.grid(row=3, rowspan=15, column=0)
+
 
     def callback(self, url):
         webbrowser.open_new(url)

@@ -18,3 +18,4 @@ if data['result']['character']['status']['alive'] == True:
     print('Currently alive')
 else:
     print('Currently floating above the planes')
+print('Avatar URL: ' + data['result']['character']['avatar']['url'])
