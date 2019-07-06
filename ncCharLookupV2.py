@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # Nexus Clash character profile info lookup by name
-# Version 0.1
+# Version 2.0
 # Written by plscks
 #
 # Let's see if I can get this thing to work well
@@ -45,14 +45,28 @@ class MainApplication(tk.Frame):
         self.parent = parent
         self.grid_forget()
 
-        tk.Label(self, text='Check Character: ').grid(row=2, column=0)
+        # Setting default buttons and fields
         charName = tk.StringVar()
-        e1 = tk.Entry(self, textvariable=charName).grid(row=2, column=1)
+        queryNameLabel = tk.Label(self, text='Check Character Name: ')
+        queryNameLabel.grid(row=2, column=0)
+        queryEntryField = tk.Entry(self, textvariable=charName)
+        queryEntryField.grid(row=2, column=1)
         lookupBtn = tk.Button(self, text='Lookup', width=6, command=lambda: self.infoGather(charName.get()))
         lookupBtn.grid(row=2, column=2)
-        exit = tk.Button(self, text='QUIT', width=20, command=root.destroy).grid(row=18, column=2)
-
-
+        exit = tk.Button(self, text='QUIT', width=20, command=root.destroy)
+        exit.grid(row=18, column=2)
+        avatarField = tk.Canvas(self, width = 250, height = 250)
+        avatarField.grid(row=3, rowspan=15, column=0)
+        charNameLabel = tk.Label(self, text='Character Name: ')
+        charNameLabel.grid(row=3, column=1, sticky=tk.E)
+        charNamePanel = tk.Entry(self, state='readonly', readonlybackground='white', fg='black')
+        charNamePanel.grid(row=3, column=2, columnspan=2)
+        charIDLabel = tk.Label(self, text='Character ID: ')
+        charIDLabel.grid(row=4, column=1, sticky=tk.E)
+        charIDPanel = tk.Entry(self, state='readonly', readonlybackground='white', fg='black')
+        charIDPanel.grid(row=4, column=2, columnspan=2)
+        profileBtn = tk.Label(self, text="profile", fg="blue", cursor="hand2")
+        profileBtn.grid(row=5, column=2)
 
 
     def infoGather(self, inName):
