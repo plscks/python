@@ -55,19 +55,25 @@ class MainApplication(tk.Frame):
         lookupBtn.grid(row=2, column=2)
         exit = tk.Button(self, text='QUIT', width=20, command=root.destroy)
         exit.grid(row=18, column=2)
-        avatarField = tk.Canvas(self, width = 250, height = 250)
-        avatarField.grid(row=3, rowspan=15, column=0)
-        charNameLabel = tk.Label(self, text='Character Name: ')
-        charNameLabel.grid(row=3, column=1, sticky=tk.E)
-        charNamePanel = tk.Entry(self, state='readonly', readonlybackground='white', fg='black')
-        charNamePanel.grid(row=3, column=2, columnspan=2)
-        charIDLabel = tk.Label(self, text='Character ID: ')
-        charIDLabel.grid(row=4, column=1, sticky=tk.E)
-        charIDPanel = tk.Entry(self, state='readonly', readonlybackground='white', fg='black')
-        charIDPanel.grid(row=4, column=2, columnspan=2)
-        profileBtn = tk.Label(self, text="profile", fg="blue", cursor="hand2")
-        profileBtn.grid(row=5, column=2)
+        gridInit()
 
+
+    def gridInit(self):
+        # Create buttons
+        avatarField = tk.Canvas(self, width = 250, height = 250)
+        charNameLabel = tk.Label(self, text='Character Name: ')
+        charNamePanel = tk.Entry(self, state='readonly', readonlybackground='white', fg='black')
+        charIDLabel = tk.Label(self, text='Character ID: ')
+        charIDPanel = tk.Entry(self, state='readonly', readonlybackground='white', fg='black')
+        profileBtn = tk.Label(self, text="profile", fg="blue", cursor="hand2")
+
+        # Position buttons
+        avatarField.grid(row=3, rowspan=15, column=0)
+        charNameLabel.grid(row=3, column=1, sticky=tk.E)
+        charNamePanel.grid(row=3, column=2, columnspan=2)
+        charIDLabel.grid(row=4, column=1, sticky=tk.E)
+        charIDPanel.grid(row=4, column=2, columnspan=2)
+        profileBtn.grid(row=5, column=2)
 
     def infoGather(self, inName):
         inName.replace(' ', '%20')
@@ -92,8 +98,11 @@ class MainApplication(tk.Frame):
         profileBtn.bind('<Button-1>', lambda e: self.callback('https://www.nexusclash.com/modules.php?name=Game&op=character&id=' + str(data['result']['character']['id'])))
         profileBtn.grid(row=5, column=2)
 
-        URL = data['result']['character']['avatar']['url'].replace(' ', '%20')
-        u = urlopen(URL)
+        try:
+            URL = data['result']['character']['avatar']['url'].replace(' ', '%20')
+            u = urlopen(URL)
+        except urllib.error.HTTPError:
+            u = urlopen()
         raw_data = u.read()
         u.close()
         im = Image.open(BytesIO(raw_data))
