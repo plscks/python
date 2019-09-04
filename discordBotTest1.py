@@ -292,7 +292,7 @@ async def craft(ctx, *, item='list'):
     craft.setdefault('sabre', []).append('+10xp / +5AP')
     craft.setdefault('sabre', []).append('2 Chunk of Steel')
     craft.setdefault('sabre', []).append('1 Chunk of Iron')
-    Craft.setdefault('sword', []).append('+10xp / +5AP')
+    craft.setdefault('sword', []).append('+10xp / +5AP')
     craft.setdefault('sword', []).append('3 Chunk of Steel')
     craft.setdefault('tarnished sword', []).append('+10xp / +5AP')
     craft.setdefault('tarnished sword', []).append('2 Chunk of Steel')
