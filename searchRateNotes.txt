@@ -3,4 +3,3 @@ https://wiki.nexuscla.sh/wiki/api.php?action=query&list=categorymembers&cmtitle=
 
 gets wikitext of page 'Library'
 can use pageid=#### instead of page title/link
-https://wiki.nexuscla.sh/wiki/api.php?action=parse&format=json&prop=wikitext&page=Library
