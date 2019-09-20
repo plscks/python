@@ -19,3 +19,7 @@ if data['result']['character']['status']['alive'] == True:
 else:
     print('Currently floating above the planes')
 print('Avatar URL: ' + data['result']['character']['avatar']['url'])
+if data['result']['character']['faction']['id'] == 0:
+    print('Character is a feral.')
+else:
+    print('Character is ' + data['result']['character']['faction']['rank'] + ' in ' + data['result']['character']['faction']['name'])

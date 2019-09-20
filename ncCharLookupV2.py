@@ -51,12 +51,12 @@ class MainApplication(tk.Frame):
         queryNameLabel.grid(row=2, column=0)
         queryEntryField = tk.Entry(self, textvariable=charName)
         queryEntryField.grid(row=2, column=1)
-        adStatusField = tk.Label(self, text='', width=40)
+        adStatusField = tk.Label(self, text='', width=45)
         adStatusField.grid(row=3, column=1, columnspan=1)
         lookupBtn = tk.Button(self, text='Lookup', width=6, command=lambda: self.infoGather(charName.get(), adStatusField))
-        lookupBtn.grid(row=2, column=2, pady=10)
+        lookupBtn.grid(row=2, column=2, pady=5)
         exit = tk.Button(self, text='QUIT', width=20, command=root.destroy)
-        exit.grid(row=18, column=2, padx=10, pady=10)
+        exit.grid(row=18, column=2, padx=10, pady=5)
         self.gridInit()
 
 
@@ -64,23 +64,29 @@ class MainApplication(tk.Frame):
         # Create buttons
         avatarField = tk.Canvas(self, width = 250, height = 250)
         charNameLabel = tk.Label(self, text='Character Name: ')
-        charNamePanel = tk.Entry(self, state='readonly', readonlybackground='white', fg='black', width=25)
+        charNamePanel = tk.Entry(self, state='readonly', readonlybackground='white', fg='black', width=45)
         charIDLabel = tk.Label(self, text='Character ID: ')
-        charIDPanel = tk.Entry(self, state='readonly', readonlybackground='white', fg='black', width=25)
+        charIDPanel = tk.Entry(self, state='readonly', readonlybackground='white', fg='black', width=45)
         profileBtn = tk.Label(self, text="profile", fg="blue", cursor="hand2")
-        charClassInfoLabel = tk.Label(self, text='Character Level & Class')
-        charClassInfoPanel = tk.Entry(self, state='readonly', readonlybackground='white', fg='black', width=25)
+        charClassInfoLabel = tk.Label(self, text='Character Level & Class: ')
+        charClassInfoPanel = tk.Entry(self, state='readonly', readonlybackground='white', fg='black', width=45)
+        factionLabel = tk.Label(self, text='Faction & Rank: ')
+        factionPanel = tk.Entry(self, state='readonly', readonlybackground='white', fg='black', width=45)
+        descLabel = tk.Label(self)
 
 
         # Position of buttons
-        avatarField.grid(row=4, rowspan=15, column=0)
+        profileBtn.grid(row=3, column=2, pady=5)
+        avatarField.grid(row=4, rowspan=15, column=0, padx=5)
         charNameLabel.grid(row=4, column=1, sticky=tk.E)
-        charNamePanel.grid(row=4, column=2, columnspan=2)
+        charNamePanel.grid(row=4, column=2, columnspan=2, padx=5)
         charIDLabel.grid(row=5, column=1, sticky=tk.E)
-        charIDPanel.grid(row=5, column=2, columnspan=2)
+        charIDPanel.grid(row=5, column=2, columnspan=2, padx=5)
         charClassInfoLabel.grid(row=6, column=1, sticky=tk.E)
-        charClassInfoPanel.grid(row=6, column=2, columnspan=3)
-        profileBtn.grid(row=3, column=2)
+        charClassInfoPanel.grid(row=6, column=2, columnspan=2, padx=5)
+        factionLabel.grid(row=7, column=1, sticky=tk.E)
+        factionPanel.grid(row=7, column=2, columnspan=2, padx=5)
+        descLabel.grid(row=8, rowspan=2, column=1, columnspan=3, padx=5)
 
 
     def infoGather(self, inName, status):
@@ -91,20 +97,20 @@ class MainApplication(tk.Frame):
         tk.Label(self, text='Character Name: ').grid(row=4, column=1, sticky=tk.E)
         collectedName = tk.StringVar()
         collectedName.set(data['result']['character']['name']['name'])
-        charNamePanel = tk.Entry(self, state='readonly', readonlybackground='white', fg='black', width=25)
+        charNamePanel = tk.Entry(self, state='readonly', readonlybackground='white', fg='black', width=45)
         charNamePanel.config(textvariable=collectedName, relief='flat')
-        charNamePanel.grid(row=4, column=2, columnspan=2)
+        charNamePanel.grid(row=4, column=2, columnspan=2, padx=5)
 
         tk.Label(self, text='Character ID: ').grid(row=5, column=1, sticky=tk.E)
         collectedID = tk.StringVar()
         collectedID.set(data['result']['character']['id'])
-        charIDPanel = tk.Entry(self, state='readonly', readonlybackground='white', fg='black', width=25)
+        charIDPanel = tk.Entry(self, state='readonly', readonlybackground='white', fg='black', width=45)
         charIDPanel.config(textvariable=collectedID, relief='flat')
-        charIDPanel.grid(row=5, column=2, columnspan=2)
+        charIDPanel.grid(row=5, column=2, columnspan=2, padx=5)
 
         profileBtn = tk.Label(self, text="profile", fg="blue", cursor="hand2")
         profileBtn.bind('<Button-1>', lambda e: self.callback('https://www.nexusclash.com/modules.php?name=Game&op=character&id=' + str(data['result']['character']['id'])))
-        profileBtn.grid(row=3, column=2)
+        profileBtn.grid(row=3, column=2, pady=5)
 
         try:
             URL = data['result']['character']['avatar']['url'].replace(' ', '%20')
@@ -123,7 +129,7 @@ class MainApplication(tk.Frame):
         avatar = tk.Canvas(self, width = 250, height = 250)
         avatar.image = photo
         avatar.create_image(5, 127, anchor=tk.W, image=photo)
-        avatar.grid(row=3, rowspan=15, column=0)
+        avatar.grid(row=3, rowspan=15, column=0, padx=5)
 
         if data['result']['character']['status']['alive'] == True:
             status.config(text='This character is currently alive.')
@@ -137,11 +143,33 @@ class MainApplication(tk.Frame):
         collectedClass = data['result']['character']['classes'][charClass]
         collectedClassInfo = tk.StringVar()
         collectedClassInfo.set('Level ' + collectedLevel + ' ' + collectedClass)
-        charClassInfoLabel = tk.Label(self, text='Character Level & Class')
-        charClassInfoPanel = tk.Entry(self, state='readonly', readonlybackground='white', fg='black', width=25)
+        charClassInfoLabel = tk.Label(self, text='Character Level & Class: ')
+        charClassInfoPanel = tk.Entry(self, state='readonly', readonlybackground='white', fg='black', width=45)
         charClassInfoLabel.grid(row=6, column=1, sticky=tk.E)
         charClassInfoPanel.config(textvariable=collectedClassInfo, relief='flat')
-        charClassInfoPanel.grid(row=6, column=2, columnspan=3)
+        charClassInfoPanel.grid(row=6, column=2, columnspan=2, padx=5)
+
+
+        factionLabel = tk.Label(self, text='Faction & Rank: ')
+        factionLabel.grid(row=7, column=1, sticky=tk.E)
+        if data['result']['character']['faction']['id'] == 0:
+            collectedFactionInfo = tk.StringVar()
+            collectedFactionInfo.set('Character is feral')
+            factionPanel = tk.Entry(self, state='readonly', readonlybackground='white', fg='black', width=45)
+            factionPanel.config(textvariable=collectedFactionInfo, relief='flat')
+            factionPanel.grid(row=7, column=2, columnspan=2, padx=5)
+        else:
+            collectedRank = data['result']['character']['faction']['rank']
+            collectedFaction = data['result']['character']['faction']['name']
+            collectedFactionInfo = tk.StringVar()
+            collectedFactionInfo.set(collectedRank + ' in ' + collectedFaction)
+            factionPanel = tk.Entry(self, state='readonly', readonlybackground='white', fg='black', width=45)
+            factionPanel.config(textvariable=collectedFactionInfo, relief='flat')
+            factionPanel.grid(row=7, column=2, columnspan=2, padx=5)
+
+        collectedDesc = str(data['result']['character']['description']['physical'])
+        descLabel = tk.Label(self, text=collectedDesc, wraplength=620, height=8)
+        descLabel.grid(row=8, rowspan=2, column=1, columnspan=3, padx=5)
 
 
     def callback(self, url):
