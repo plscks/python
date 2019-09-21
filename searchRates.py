@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# Nexus Clash search rates utility v0.2
+# Nexus Clash search rates utility v0.3
 # Written by plscks
 # Utilizes WikiMedia built in api
 # API documentation : https://wiki.nexuscla.sh/wiki/api.php
@@ -13,7 +13,7 @@
 # [X] clean wiki text of useless information store in pageInfo =  [itemName: findWeight]
 # [X] calculate search rate from findWeight totals
 # [X] store in dictionary as locationRates = [itemName: searchRate]
-# [] store in dictionary within dictionary masterRates = [itemName: [locationName: searchRate]]
+# [X] store in dictionary within dictionary masterRates = [itemName: [locationName: searchRate]]
 # [] sort itemName by searchRate descending
 # [] output as json to be imported in RRFBot
 #
@@ -22,6 +22,7 @@
 import json
 import re
 import requests
+import time
 
 def getRawLocations():
     """Gets json data of all current breath locations wiki page ids"""
@@ -52,44 +53,71 @@ def getItemRates(location, pageid):
     if 'Items found inside:' in wikitext:
         shortWikitext = wikitext[wikitext.find('|+ Items found inside:'):]
         insideFinds = shortWikitext.split('background-color:#f0f8ff;"', 1)[0]
-        outsideFinds = wikitext[wikitext.find('|+ Items found outside:'):]
+        if 'Items found outside' in wikitext:
+            outsideFinds = wikitext[wikitext.find('|+ Items found outside:'):]
+            outsideFinds = outsideFinds.split('|}', 1)[0]
+        else:
+            insideFinds = insideFinds.split('|}', 1)[0]
+            outsideFinds = None
     else:
         shortWikitext = wikitext[wikitext.find('|+ Items found outside:'):]
-        outsideFinds = shortWikiFinds
+        outsideFinds = shortWikitext.split('|}', 1)[0]
         insideFinds = None
-##send text out to textParse() and set into lists
     if insideFinds == None:
         output = {}
         outsideItemNameList = textParse(outsideFinds)[0]
         outsideItemPercentList = textParse(outsideFinds)[1]
-        tileNamePercent = dict(zip(outsideItemNameList, outsideItemPercentList))
-        output['Outside ' + location] = tileNamePercent
+        number = -1
+        #print(outsideItemNameList)
+        for i in outsideItemNameList:
+            number += 1
+            output[i] = {'Outside ' + location: outsideItemPercentList[number]}
         return output
     else:
-        totalItemNameList = []
-        totalItemPercentList = []
-        output = {}
-        insideItemNameList = textParse(insideFinds)[0]
-        insideItemPercentList = textParse(insideFinds)[1]
-        insideNamePercent = dict(zip(insideItemNameList, insideItemPercentList))
-        outsideItemNameList = textParse(outsideFinds)[0]
-        outsideItemPercentList = textParse(outsideFinds)[1]
-        outsideNamePercent = dict(zip(outsideItemNameList, outsideItemPercentList))
-        output['Inside ' + location] = insideNamePercent
-        output['Outside ' + location] = outsideNamePercent
-        return output
-
-    items = dict(zip(insideItemNameList, insideItemRatePercent))
-    print(items)
-
-    return items
+        if outsideFinds == None:
+            output = {}
+            insideItemNameList = textParse(insideFinds)[0]
+            insideItemPercentList = textParse(insideFinds)[1]
+            number = -1
+            #print(insideItemNameList)
+            for i in insideItemNameList:
+                number += 1
+                output[i] = {'Outside ' + location: insideItemPercentList[number]}
+            return output
+        else:
+            totalItemNameList = []
+            totalItemPercentList = []
+            output = {}
+            #print(f'Text: {insideFinds}')
+            insideItemNameList = textParse(insideFinds)[0]
+            insideItemPercentList = textParse(insideFinds)[1]
+            outsideItemNameList = textParse(outsideFinds)[0]
+            outsideItemPercentList = textParse(outsideFinds)[1]
+            number = -1
+            #print(insideItemNameList)
+            for i in insideItemNameList:
+                number += 1
+                #print(f'Number: {number}    Location: {location}    Item: {i}')
+                #print(f'Percent List: {insideItemPercentList}')
+                output[i] = {'Inside ' + location: insideItemPercentList[number]}
+            number = -1
+            #print(outsideItemNameList)
+            for i in outsideItemNameList:
+                number += 1
+                #print(f'Number: {number}    Location: {location}    Item: {i}')
+                if i in output:
+                    output[i].update({'Outside ' + location: outsideItemPercentList[number]})
+                else:
+                    output[i] = {'Outside ' + location: outsideItemPercentList[number]}
+            return output
 
 def textParse(text):
+    """Pulls item names and correcsponding weights from input wiki text"""
     itemNames = re.finditer(r'(?<=\[\[).+?(?=\])', text)
     itemNameList = []
     itemRateList = []
     for m in itemNames:
-        intemNameList.append(m[0])
+        itemNameList.append(m[0])
     itemRates = re.finditer(r'(?<=\| )\d', text)
     for m in itemRates:
         itemRateList.append(int(m[0]))
@@ -104,10 +132,26 @@ def weight2Rate(inputWeights):
         percentRates.append((i / weightSum) * 100)
     return percentRates
 
-if __name__ == "__main__":
+def masterOutput():
     masterLocations = getCleanLocations()
     findRates = {}
     locationData = {}
+    masterList = {}
     for k, v in masterLocations.items():
-        LocationData[k] = getItemRates(k, v)[k]
-        print('Key: ' + k + ' Value: ' + str(v))
+        locationData[k] = getItemRates(k, v)
+        #print(locationData[k])
+        for key, value in locationData[k].items():
+            #print(f'Key: {key}    Value: {value}')
+            if key in masterList:
+                #print(f'Master List before: {masterList}')
+                masterList[key].update(value)
+                #print(f'Master List after: {masterList}')
+            else:
+                #print(f'Master List before: {masterList}')
+                masterList[key] = value
+                #print(f'Master List after: {masterList}')
+        time.sleep(2)
+    return masterList
+
+if __name__ == "__main__":
+    print(masterOutput())
