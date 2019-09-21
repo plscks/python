@@ -5,3 +5,8 @@ Test2.gif
 Test3.jpg
 Test4.png
 Test5.png
+
+# Ignore node files
+node_modules/
+update.sh
+nohup.out
