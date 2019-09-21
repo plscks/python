@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# Nexus Clash search rates utility v0.4
+# Nexus Clash search rates utility v0.5
 # Written by plscks
 # Utilizes WikiMedia built in api
 # API documentation : https://wiki.nexuscla.sh/wiki/api.php
@@ -15,7 +15,8 @@
 # [X] store in dictionary as locationRates = [itemName: searchRate]
 # [X] store in dictionary within dictionary masterRates = [itemName: [locationName: searchRate]]
 # [] sort itemName by searchRate descending
-# [] output as json to be imported in RRFBot
+# [x] output as json to be imported in RRFBot
+# [] Tea House (pageid:5886) lists as outside even though page shows only inside
 #
 # Is this a test?
 # It has to be.....
@@ -82,7 +83,7 @@ def getItemRates(location, pageid):
             #print(insideItemNameList)
             for i in insideItemNameList:
                 number += 1
-                output[i] = {'Outside ' + location: insideItemPercentList[number]}
+                output[i] = {'Inside ' + location: insideItemPercentList[number]}
             return output
         else:
             totalItemNameList = []
@@ -154,4 +155,7 @@ def masterOutput():
     return masterList
 
 if __name__ == "__main__":
-    print(masterOutput())
+    #jsonOut = json.dumps(masterOutput())
+    #print(jsonOut)
+    with open('searchRates.json', 'w') as json_file:
+        json.dump(masterOutput(), json_file)
