@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# Nexus Clash search rates utility v0.5
+# Nexus Clash search rates utility v0.7
 # Written by plscks
 # Utilizes WikiMedia built in api
 # API documentation : https://wiki.nexuscla.sh/wiki/api.php
@@ -14,9 +14,9 @@
 # [X] calculate search rate from findWeight totals
 # [X] store in dictionary as locationRates = [itemName: searchRate]
 # [X] store in dictionary within dictionary masterRates = [itemName: [locationName: searchRate]]
-# [] sort itemName by searchRate descending
+# [x] sort itemName by searchRate descending <= Sorting to be done in javascript
 # [x] output as json to be imported in RRFBot
-# [] Tea House (pageid:5886) lists as outside even though page shows only inside
+# [X] BUG - some pages with only inside or outside tables break things
 #
 # Is this a test?
 # It has to be.....
@@ -43,6 +43,7 @@ def getCleanLocations():
 
 def getItemRates(location, pageid):
     """Gets item find weight from locations pages"""
+    #print(f'Current Location: {location}')
     items = {}
     ## setup as {locationName: {itemName: findWeight}}
     response = requests.get('https://wiki.nexuscla.sh/wiki/api.php?action=parse&format=json&prop=wikitext&pageid=' + str(pageid))
@@ -51,6 +52,16 @@ def getItemRates(location, pageid):
     else:
         print('Bad page ID, canceling request.')
     wikitext = wikitext['parse']['wikitext']['*']
+    oddsText = wikitext[wikitext.find('|FindOut='):]
+    #print(oddsText)
+    if oddsText.startswith('|FindOut=') == False:
+        print(f'No search odds listed for {location}')
+        inOdds = 1
+        outOdds = 1
+    else:
+        oddsText = oddsText.split('|HideOut=', 1)[0]
+        inOdds = oddsParse(oddsText, location)[0]
+        outOdds = oddsParse(oddsText, location)[1]
     if 'Items found inside:' in wikitext:
         shortWikitext = wikitext[wikitext.find('|+ Items found inside:'):]
         insideFinds = shortWikitext.split('background-color:#f0f8ff;"', 1)[0]
@@ -63,11 +74,16 @@ def getItemRates(location, pageid):
     else:
         shortWikitext = wikitext[wikitext.find('|+ Items found outside:'):]
         outsideFinds = shortWikitext.split('|}', 1)[0]
+        if outsideFinds.startswith('|+ Items found outside:') == False:
+            outsideFinds = None
         insideFinds = None
     if insideFinds == None:
+        if outsideFinds == None:
+            print(f'No items to find at {location}')
+            return {}
         output = {}
-        outsideItemNameList = textParse(outsideFinds)[0]
-        outsideItemPercentList = textParse(outsideFinds)[1]
+        outsideItemNameList = textParse(outsideFinds, outOdds)[0]
+        outsideItemPercentList = textParse(outsideFinds, outOdds)[1]
         number = -1
         #print(outsideItemNameList)
         for i in outsideItemNameList:
@@ -77,8 +93,8 @@ def getItemRates(location, pageid):
     else:
         if outsideFinds == None:
             output = {}
-            insideItemNameList = textParse(insideFinds)[0]
-            insideItemPercentList = textParse(insideFinds)[1]
+            insideItemNameList = textParse(insideFinds, inOdds)[0]
+            insideItemPercentList = textParse(insideFinds, inOdds)[1]
             number = -1
             #print(insideItemNameList)
             for i in insideItemNameList:
@@ -90,10 +106,10 @@ def getItemRates(location, pageid):
             totalItemPercentList = []
             output = {}
             #print(f'Text: {insideFinds}')
-            insideItemNameList = textParse(insideFinds)[0]
-            insideItemPercentList = textParse(insideFinds)[1]
-            outsideItemNameList = textParse(outsideFinds)[0]
-            outsideItemPercentList = textParse(outsideFinds)[1]
+            insideItemNameList = textParse(insideFinds, inOdds)[0]
+            insideItemPercentList = textParse(insideFinds, inOdds)[1]
+            outsideItemNameList = textParse(outsideFinds, outOdds)[0]
+            outsideItemPercentList = textParse(outsideFinds, outOdds)[1]
             number = -1
             #print(insideItemNameList)
             for i in insideItemNameList:
@@ -112,25 +128,57 @@ def getItemRates(location, pageid):
                     output[i] = {'Outside ' + location: outsideItemPercentList[number]}
             return output
 
-def textParse(text):
+def oddsParse(text, location):
+    try:
+        outOdds = int(re.search(r'(?<=\|FindOut=)\d+', text).group())
+    except AttributeError:
+        print(f'No listed outside search odds for {location}.')
+        outOdds = 1
+    try:
+        inOdds = int(re.search(r'(?<=\|FindIn=)\d+', text).group())
+    except AttributeError:
+        print(f'No listed inside search odds for {location}.')
+        inOdds = 1
+    if inOdds == 0:
+        inOdds = 1
+    else:
+        inOdds = inOdds / 100
+    if outOdds == 0:
+        outOdds = 1
+    else:
+        outOdds = outOdds / 100
+    return inOdds, outOdds
+
+def textParse(text, baseOdds):
     """Pulls item names and correcsponding weights from input wiki text"""
     itemNames = re.finditer(r'(?<=\[\[).+?(?=\])', text)
     itemNameList = []
     itemRateList = []
     for m in itemNames:
         itemNameList.append(m[0])
-    itemRates = re.finditer(r'(?<=\| )\d', text)
+    #print(f'text: {text}')
+    itemRates = re.finditer(r'(?<=\| )\d+', text)
+    #print(f'Item name list: {itemNameList}')
+    #print(f'Item rate list: {itemRates}')
     for m in itemRates:
+        #print(f'Item rate: {m[0]}')
         itemRateList.append(int(m[0]))
-    itemRatePercent = weight2Rate(itemRateList)
+        #print(f'Current item rate list: {itemRateList}')
+    #print(itemRateList)
+    #print(itemNameList)
+    itemRatePercent = weight2Rate(itemRateList, baseOdds)
     return itemNameList, itemRatePercent
 
-def weight2Rate(inputWeights):
+def weight2Rate(inputWeights, baseOdds):
     """converts item find weight to search rates by percentage"""
+    #print(inputWeights)
     weightSum = sum(inputWeights)
+    #print(f'Item weight sum: {weightSum}')
     percentRates = []
     for i in inputWeights:
-        percentRates.append((i / weightSum) * 100)
+        #print(f'Individual weight: {i}   Weight Sum: {weightSum}   Base odds: {baseOdds}')
+        percentRates.append(((i / weightSum) * baseOdds) * 100)
+    #print(f'Percent rates: {percentRates}')
     return percentRates
 
 def masterOutput():
@@ -138,6 +186,7 @@ def masterOutput():
     findRates = {}
     locationData = {}
     masterList = {}
+    #getItemRates('Library', 65)
     for k, v in masterLocations.items():
         locationData[k] = getItemRates(k, v)
         #print(locationData[k])
@@ -155,7 +204,8 @@ def masterOutput():
     return masterList
 
 if __name__ == "__main__":
+    #print(getItemRates('Hallowed Group', 5613))
     #jsonOut = json.dumps(masterOutput())
-    #print(jsonOut)
+    #print('Finished query.')
     with open('searchRates.json', 'w') as json_file:
         json.dump(masterOutput(), json_file)
