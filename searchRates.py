@@ -45,9 +45,7 @@ def getCleanLocations():
 
 def getItemRates(location, pageid):
     """Gets item find weight from locations pages"""
-    #print(f'Current Location: {location}')
     items = {}
-    ## setup as {locationName: {itemName: findWeight}}
     response = requests.get('https://wiki.nexuscla.sh/wiki/api.php?action=parse&format=json&prop=wikitext&pageid=' + str(pageid))
     if response.status_code == 200:
         wikitext = json.loads(response.content.decode('utf-8'))
@@ -55,7 +53,6 @@ def getItemRates(location, pageid):
         print('Bad page ID, canceling request.')
     wikitext = wikitext['parse']['wikitext']['*']
     oddsText = wikitext[wikitext.find('|FindOut='):]
-    #print(oddsText)
     if oddsText.startswith('|FindOut=') == False:
         print(f'No search odds listed for {location}')
         inOdds = 1
@@ -87,7 +84,6 @@ def getItemRates(location, pageid):
         outsideItemNameList = textParse(outsideFinds, outOdds)[0]
         outsideItemPercentList = textParse(outsideFinds, outOdds)[1]
         number = -1
-        #print(outsideItemNameList)
         for i in outsideItemNameList:
             number += 1
             output[i] = {'Outside ' + location: outsideItemPercentList[number]}
@@ -98,7 +94,6 @@ def getItemRates(location, pageid):
             insideItemNameList = textParse(insideFinds, inOdds)[0]
             insideItemPercentList = textParse(insideFinds, inOdds)[1]
             number = -1
-            #print(insideItemNameList)
             for i in insideItemNameList:
                 number += 1
                 output[i] = {'Inside ' + location: insideItemPercentList[number]}
@@ -107,23 +102,17 @@ def getItemRates(location, pageid):
             totalItemNameList = []
             totalItemPercentList = []
             output = {}
-            #print(f'Text: {insideFinds}')
             insideItemNameList = textParse(insideFinds, inOdds)[0]
             insideItemPercentList = textParse(insideFinds, inOdds)[1]
             outsideItemNameList = textParse(outsideFinds, outOdds)[0]
             outsideItemPercentList = textParse(outsideFinds, outOdds)[1]
             number = -1
-            #print(insideItemNameList)
             for i in insideItemNameList:
                 number += 1
-                #print(f'Number: {number}    Location: {location}    Item: {i}')
-                #print(f'Percent List: {insideItemPercentList}')
                 output[i] = {'Inside ' + location: insideItemPercentList[number]}
             number = -1
-            #print(outsideItemNameList)
             for i in outsideItemNameList:
                 number += 1
-                #print(f'Number: {number}    Location: {location}    Item: {i}')
                 if i in output:
                     output[i].update({'Outside ' + location: outsideItemPercentList[number]})
                 else:
@@ -158,29 +147,18 @@ def textParse(text, baseOdds):
     itemRateList = []
     for m in itemNames:
         itemNameList.append(m[0])
-    #print(f'text: {text}')
     itemRates = re.finditer(r'(?<=\| )\d+', text)
-    #print(f'Item name list: {itemNameList}')
-    #print(f'Item rate list: {itemRates}')
     for m in itemRates:
-        #print(f'Item rate: {m[0]}')
         itemRateList.append(int(m[0]))
-        #print(f'Current item rate list: {itemRateList}')
-    #print(itemRateList)
-    #print(itemNameList)
     itemRatePercent = weight2Rate(itemRateList, baseOdds)
     return itemNameList, itemRatePercent
 
 def weight2Rate(inputWeights, baseOdds):
     """converts item find weight to search rates by percentage"""
-    #print(inputWeights)
     weightSum = sum(inputWeights)
-    #print(f'Item weight sum: {weightSum}')
     percentRates = []
     for i in inputWeights:
-        #print(f'Individual weight: {i}   Weight Sum: {weightSum}   Base odds: {baseOdds}')
         percentRates.append(((i / weightSum) * baseOdds) * 100)
-    #print(f'Percent rates: {percentRates}')
     return percentRates
 
 def masterOutput():
@@ -188,26 +166,15 @@ def masterOutput():
     findRates = {}
     locationData = {}
     masterList = {}
-    #getItemRates('Library', 65)
     for k, v in masterLocations.items():
         locationData[k] = getItemRates(k, v)
-        #print(locationData[k])
         for key, value in locationData[k].items():
-            #print(f'Key: {key}    Value: {value}')
             if key in masterList:
-                #print(f'Master List before: {masterList}')
                 masterList[key].update(value)
-                #print(f'Master List after: {masterList}')
             else:
-                #print(f'Master List before: {masterList}')
                 masterList[key] = value
-                #print(f'Master List after: {masterList}')
-        #time.sleep(2)
     return masterList
 
 if __name__ == "__main__":
-    #print(getItemRates('Hallowed Group', 5613))
-    #jsonOut = json.dumps(masterOutput())
-    #print('Finished query.')
     with open('searchRates.json', 'w') as json_file:
         json.dump(masterOutput(), json_file)
