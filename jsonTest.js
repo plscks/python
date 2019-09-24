@@ -111,11 +111,6 @@ const query = require('readline').createInterface({
 var sortedItems = getNames(jsonData);
 
 query.question(`What letter does the item start with? : `, (letterToList) => {
-  console.log(!sortedItems.includes(item));
-  if (!sortedItems.includes(item)) {
-    console.log(item + ' not found in database check for a spelling error?');
-    return;
-  }
   var itemsStartingWith = itemsStartWith(sortedItems, letterToList);
   console.log('           ITEMS THAT CAN BE QUERIED');
   console.log('+-----------------------------------------------+');
