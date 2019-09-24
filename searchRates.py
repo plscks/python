@@ -1,8 +1,10 @@
 #!/usr/bin/python3
-# Nexus Clash search rates utility v0.7
+# Nexus Clash search rates utility v0.8
 # Written by plscks
 # Utilizes WikiMedia built in api
 # API documentation : https://wiki.nexuscla.sh/wiki/api.php
+#
+# Requires the requests module
 #
 ################
 ## TO DO LIST ##
