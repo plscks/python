@@ -200,7 +200,7 @@ def masterOutput():
                 #print(f'Master List before: {masterList}')
                 masterList[key] = value
                 #print(f'Master List after: {masterList}')
-        time.sleep(2)
+        #time.sleep(2)
     return masterList
 
 if __name__ == "__main__":
