@@ -54,11 +54,18 @@ function itemsStartWith(masterList, letter) {
   return letterList
 }
 
-//////////
+
+/*
+////////////////////
+// EASY TEST CODE //
+////////////////////
+// The section below is for quick and easy
+// testing without readline tracebacks that
+// aren't helpful. Keep commented unless testing
 
 // INPUTS //
-var item = 'chunk of ssteel';
-var letterToList = 'c';
+var item = 'rock';
+var letterToList = 'p';
 var sortedItems = getNames(jsonData);
 
 // CHECK IF INPUT IN LIST
@@ -74,7 +81,6 @@ console.log('           ITEMS THAT CAN BE QUERIED');
 console.log('+-----------------------------------------------+');
 for (i = 0; i < itemsStartingWith.length; ++i) console.log('       ' + itemsStartingWith[i]);
 
-
 //DISPLAY RESULTS
 var itemData = jsonData[item.toLowerCase()];
 var sorted = sortResults(itemData);
@@ -89,22 +95,52 @@ for (var i = 0; i < sorted.length; ++i) {
   else percent = percent.toPrecision(4)
   console.log(percent + ' -------------- ' + sorted[i][0]);
 }
+*/
 
-//////////
-/*
+//////////////////////////////////
+// Below is interactive version //
+//////////////////////////////////
+// If using this, make sure the
+// test code above is commented out.
+
 const query = require('readline').createInterface({
   input: process.stdin,
   output: process.stdout
 })
 
+var sortedItems = getNames(jsonData);
 
-getNames(jsonData)
+query.question(`What letter does the item start with? : `, (item) => {
+  console.log(!sortedItems.includes(item));
+  if (!sortedItems.includes(item)) {
+    console.log(item + ' not found in database check for a spelling error?');
+    return;
+  }
+  var itemsStartingWith = itemsStartWith(sortedItems, letterToList);
+  console.log('           ITEMS THAT CAN BE QUERIED');
+  console.log('+-----------------------------------------------+');
+  for (i = 0; i < itemsStartingWith.length; ++i) console.log('       ' + itemsStartingWith[i]);
+  query.close();
+})
+
 query.question(`What item are you searching for? : `, (item) => {
   var itemData = jsonData[item.toLowerCase()];
   var sorted = sortResults(itemData);
+  console.log(!sortedItems.includes(item));
+  if (!sortedItems.includes(item)) {
+    console.log(item + ' not found in database check for a spelling error?');
+    return;
+  }
+  console.log('');
+  console.log('');
+  console.log('Information for ' + item);
+  console.log('Percent to Find        Location');
+  console.log('+----------------------------------------------+');
   for (var i = 0; i < sorted.length; ++i) {
-    console.log(sorted[i][0] + ' has a ' + sorted[i][1].toFixed(2) + '% chance of finding a(n) ' + item);
+    var percent = sorted[i][1];
+    if (percent < 1) percent = percent.toFixed(3);
+    else percent = percent.toPrecision(4)
+    console.log(percent + ' -------------- ' + sorted[i][0]);
   }
   query.close();
 })
-*/
