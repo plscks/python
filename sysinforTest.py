@@ -1,5 +1,5 @@
 #!/bin/python3
-from imgrender import render
+import imgrender
 
 class Renderer():
 
