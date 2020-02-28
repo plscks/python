@@ -8,3 +8,5 @@ def imgrender.render(path, scale=(60, 60)):
     for row in output:
         print(row)
     #print('\n'.join([''.join(row) for row in output]))
+
+imgrender.render("/home/plscks/artwork-the-starry-night.jpg", (20, 20))
