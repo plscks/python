@@ -12,12 +12,13 @@ def colorString(color, text):
     return colored_text
 
 def render(path, scale=(60, 60)):
-    red = '34m'
+    blue = '34m'
+    red = '31m'
     renderer = imgrender.Renderer()
     image = imgrender.get_image(path)
     output = renderer.render_image(image, scale)
     extraInfo = getInfo()
-    output[1].append(colorString(red, '            SYSTEM: ') +  f'{extraInfo[0]}')
+    output[1].append(colorString(red, '                SYSTEM:    ') +  f'{extraInfo[0]}')
     print('\n'.join([''.join(row) for row in output]))
 
 render("/home/plscks/artwork-the-starry-night.jpg", (20, 20))
