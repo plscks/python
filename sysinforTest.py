@@ -4,9 +4,9 @@ from imgrender import render
 class Renderer():
 
     def render(path, scale=(60, 60)):
-        renderer = Renderer()
+        #renderer = Renderer()
         image = get_image(path)
-        output = renderer.render_image(image, scale)
+        output = render_image(image, scale)
         for row in output:
             print(row)
         #print('\n'.join([''.join(row) for row in output]))
