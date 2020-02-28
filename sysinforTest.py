@@ -11,6 +11,7 @@ def render(path, scale=(60, 60)):
     renderer = imgrender.Renderer()
     image = imgrender.get_image(path)
     output = renderer.render_image(image, scale)
+    print(output[1])
     extraInfo = getInfo()
     output[1] = output[1] + f'    SYSTEM: {extraInfo[0]}'
     print('\n'.join([''.join(row) for row in output]))
