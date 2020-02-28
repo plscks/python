@@ -3,7 +3,7 @@ import imgrender
 from imgrender import render
 
 def render(path, scale=(60, 60)):
-    renderer = Renderer()
+    renderer = imgrender.Renderer()
     image = get_image(path)
     output = renderer.render_image(image, scale)
     print('\n'.join([''.join(row) for row in output]))
