@@ -9,6 +9,6 @@ class Renderer():
         output = renderer.render_image(image, scale)
         for row in output:
             print(row)
-        print('\n'.join([''.join(row) for row in output]))
+        #print('\n'.join([''.join(row) for row in output]))
 
 render("/home/plscks/artwork-the-starry-night.jpg", (20, 20))
