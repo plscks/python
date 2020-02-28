@@ -13,7 +13,7 @@ def render(path, scale=(60, 60)):
     output = renderer.render_image(image, scale)
     print(output[1])
     extraInfo = getInfo()
-    output[1] = output[1] + f'    SYSTEM: {extraInfo[0]}'
+    output[1].append(f'    SYSTEM: {extraInfo[0]}')
     print('\n'.join([''.join(row) for row in output]))
 
 render("/home/plscks/artwork-the-starry-night.jpg", (20, 20))
