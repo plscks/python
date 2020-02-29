@@ -46,8 +46,8 @@ def getInfo():
     info.append(getCPU())
     uptimeComp = datetime(1,1,1) + timedelta(uptimeRaw)
     info.append(f'{uptimeComp.day-1}d {uptimeComp.hour}h {uptimeComp.minute}m {uptimeComp.second}s')
-    info.append(f'{getMem()[0]} / {getMem()[1]}  {getMem()[3]}% used  {getMem()[2]} free')
-    info.append(f'{getMem()[4]} / {getMem()[5]}  {getMem()[7]}% used  {getMem()[6]} free')
+    info.append(f'{getMem()[2]} / {getMem()[0]}  {getMem()[3]}% used  {getMem()[1]} free')
+    info.append(f'{getMem()[6]} / {getMem()[4]}  {getMem()[7]}% used  {getMem()[5]} free')
     info.append(f'{getNet()[0]}')
     info.append(f'{getNet()[1]}')
     return info
@@ -74,13 +74,13 @@ def getCPU():
 def getMem():
     """
     Gets system memory information and outputs as an array
-     memArray[0] = used memory
-     memArray[1] = total memory
-     memArray[2] = available memory
+     memArray[0] = total memory
+     memArray[1] = available memory
+     memArray[2] = used memory
      memArray[3] = percent memory used
-     memArray[4] = used swap
-     memArray[5] = total swap
-     memArray[6] = available swap
+     memArray[4] = total swap
+     memArray[5] = available swap
+     memArray[6] = used swap
      memArray[7] = percent used
      """
 
@@ -158,7 +158,7 @@ def render(path, scale=(60, 60)):
     output[4].append(colorString(red, '                CPU:    ') +  f'{extraInfo[4]}')
     output[5].append(colorString(red, '                MEMORY:    ') +  f'{extraInfo[6]}')
     output[6].append(colorString(red, '                SWAP:    ') +  f'{extraInfo[7]}')
-    output[7].append(colorString(ltgray, '                ------------------------------------------------------------'))
+    output[7].append(colorString(ltgray, '                -----------------------------------------------------------------------'))
     output[8].append(colorString(red, '                HOSTNAME:    ') +  f'{extraInfo[3]}')
     output[9].append(colorString(red, '                LOCAL IP:    ') +  f'{extraInfo[8]}')
     output[10].append(colorString(red, '                PUBLIC IP:    ') +  f'{extraInfo[9]}')
