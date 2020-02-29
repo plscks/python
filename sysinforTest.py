@@ -60,11 +60,11 @@ def getCPU():
 
     CPU = []
     with open('/proc/cpuinfo') as f:
-    for line in f:
-        if line.strip():
-            if line.rstrip('\n').startswith('model name'):
-                model_name = line.rstrip('\n').split(':')[1]
-                CPU.append(model_name)
+        for line in f:
+            if line.strip():
+                if line.rstrip('\n').startswith('model name'):
+                    model_name = line.rstrip('\n').split(':')[1]
+                    CPU.append(model_name)
     cores = psutil.cpu_count(logical=True)
     speed = round((psutil.cpu_freq().current / 1000), 3)
     cpuInfo = CPU[0] + f' (x{cores}) @ {speed} Ghz'
