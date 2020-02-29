@@ -47,7 +47,7 @@ def getInfo():
     uptimeComp = datetime(1,1,1) + timedelta(uptimeRaw)
     info.append(f'{uptimeComp.day-1}d {uptimeComp.hour}h {uptimeComp.minute}m {uptimeComp.second}s')
     info.append(f'{getMem()[0]} / {getMem()[1]}  {getMem()[3]}% used  {getMem()[2]} free')
-    info.append(f'{getMem()[4]} / {getMem()[5]}  {getMem()[7]}% used  {getMem()[8]} free')
+    info.append(f'{getMem()[4]} / {getMem()[5]}  {getMem()[7]}% used  {getMem()[6]} free')
     info.append(f'{getNet()[0]}')
     info.append(f'{getNet()[1]}')
     return info
