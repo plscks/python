@@ -110,7 +110,7 @@ def getNet():
     eth0 = psutil.net_if_addrs()['eth0']
     locIP = eth0[0][3]
     ipAddr.append(locIP)
-    extIP = = urllib.request.urlopen('https://ident.me').read().decode('utf8')
+    extIP = urllib.request.urlopen('https://ident.me').read().decode('utf8')
     ipAddr.append(extIP)
     return ipAddr
 
