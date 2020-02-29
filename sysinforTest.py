@@ -8,34 +8,55 @@
 # Couldn't find anything the was working so I decided to write my own in Python 3
 # uses the imgrender module (it is wonderful) pip install imgrender
 #
-from datetime import datetime
+from datetime import datetime, timedealta
 import imgrender
 from imgrender import render
 import os
 import platform
 import psutil
+import time
+import urllib.request
 
 def getInfo():
-    """Collects general PC information"""
+    """
+    Collects general PC information
+    info[0] = OS information
+    info[1] = boot time
+    info[2] = Kernal
+    info[3] = Hostname
+    info[4] = CPU info
+    info[5] = Uptime
+    info[6] = Memory information
+    info[7] = Swap memory information
+    info[8] = Local IP - eth0
+    info[9] = Public IP
+    """
 
-    # info[0] = OS information
-    # info[1] = boot boot_time
-    # info[2] = Kernal
-    # info[3] = Hostname
     info = []
     os = list(platform.dist())
     os.insert(1, platform.system())
     os.append(platform.machine())
     info.append(' '.join(os))
     boot_time_timestamp = psutil.boot_time()
+    uptimeRaw = time.time() - boot_time_timestamp
     bt = datetime.fromtimestamp(boot_time_timestamp)
     info.append(f'{bt.month}/{bt.day}/{bt.year} {bt.hour}:{bt.minute}:{bt.second}')
     info.append(platform.release())
     info.append(platform.node)
+    info.append(getCPU())
+    uptimeComp = datetime(1,1,1) + timedelta(uptimeRaw)
+    info.append(f'{uptimeComp.day-1}d {uptimeComp.hour}h {uptimeComp.minute}m {uptimeComp.second}s')
+    info.append(f'{getMem()[0]} / {getMem()[1]}  {getMem()[3]}% used  {getMem()[2]} free')
+    info.append(f'{getMem()[4]} / {getMem()[5]}  {getMem()[7]}% used  {getMem()[8]} free')
+    info.append(f'{getNet()[0]}')
+    info.append(f'{getNet()[1]}')
     return info
 
+
 def getCPU():
-    """Collects information specific to the CPU"""
+    """
+    Collects information specific to the CPU
+    """
 
     CPU = []
     with open('/proc/cpuinfo') as f:
@@ -46,26 +67,104 @@ def getCPU():
                 CPU.append(model_name)
     cores = psutil.cpu_count(logical=True)
     speed = round((psutil.cpu_freq().current / 1000), 3)
-    cpuInfo = CPU[0] + f'(x{cores}) @ {speed}'
+    cpuInfo = CPU[0] + f' (x{cores}) @ {speed} Ghz'
     return cpuInfo
 
+
+def getMem():
+    """
+    Gets system memory information and outputs as an array
+     memArray[0] = used memory
+     memArray[1] = total memory
+     memArray[2] = available memory
+     memArray[3] = percent memory used
+     memArray[4] = used swap
+     memArray[5] = total swap
+     memArray[6] = available swap
+     memArray[7] = percent used
+     """
+
+    mem = psutil.virtual_memory()
+    swap = psutil.swap_memory()
+    memArray = []
+    memArray.append(get_size(mem.total))
+    memArray.append(get_size(mem.available))
+    memArray.append(get_size(mem.used))
+    memArray.append(get_size(mem.percent))
+    memArray.append(get_size(swap.total))
+    memArray.append(get_size(swap.available))
+    memArray.append(get_size(swap.used))
+    memArray.append(get_size(swap.percent))
+    return memArray
+
+
+def getNet():
+    """
+    Gets local ip address of eth0 network interface
+    Gets external public ip address
+    ipAddr[0] = local ip
+    ipAddr[1] = public ip
+    """
+
+    ipAddr = []
+    eth0 = psutil.net_if_addrs()['eth0']
+    locIP = eth0[0][3]
+    ipAddr.append(locIP)
+    extIP = = urllib.request.urlopen('https://ident.me').read().decode('utf8')
+    ipAddr.append(extIP)
+    return ipAddr
+
+
+def get_size(bytes, suffix="B"):
+    """
+    Scale bytes to its proper format
+    e.g:
+        1253656 => '1.20MB'
+        1253656678 => '1.17GB'
+    """
+
+    factor = 1024
+    for unit in ["", "K", "M", "G", "T", "P"]:
+        if bytes < factor:
+            return f"{bytes:.2f}{unit}{suffix}"
+        bytes /= factor
+
+
 def colorString(color, text):
-    """Function to render color fonts"""
+    """
+    Function to render color fonts
+    """
+
     colored_text = f"\033[{color}{text}\033[00m"
     return colored_text
 
+
 def render(path, scale=(60, 60)):
-    """Redefinition of imgrender render() function to include the information"""
+    """
+    Redefinition of imgrender render() function to include the information
+    """
 
     # Set font color options
     blue = '34m'
     red = '31m'
+    ltgray = '37m'
     renderer = imgrender.Renderer()
     image = imgrender.get_image(path)
     output = renderer.render_image(image, scale)
     extraInfo = getInfo()
     output[1].append(colorString(red, '                OS:    ') +  f'{extraInfo[0]}')
+    output[2].append(colorString(red, '                KERNAL:    ') +  f'{extraInfo[2]}')
+    output[3].append(colorString(red, '                BOOT TIME:    ') +  f'{extraInfo[1]}')
+    output[4].append(colorString(red, '                CPU:    ') +  f'{extraInfo[4]}')
+    output[5].append(colorString(red, '                MEMORY:    ') +  f'{extraInfo[6]}')
+    output[6].append(colorString(red, '                SWAP:    ') +  f'{extraInfo[7]}')
+    output[7].append(colorString(ltgray, '                ------------------------------------------------------------'))
+    output[8].append(colorString(red, '                HOSTNAME:    ') +  f'{extraInfo[3]}')
+    output[9].append(colorString(red, '                LOCAL IP:    ') +  f'{extraInfo[8]}')
+    output[10].append(colorString(red, '                PUBLIC IP:    ') +  f'{extraInfo[9]}')
+    output[11].append(colorString(red, '                UPTIME:    ') +  f'{extraInfo[5]}')
     print('\n'.join([''.join(row) for row in output]))
+
 
 os.system('cls' if os.name == 'nt' else 'clear')
 render("/home/plscks/artwork-the-starry-night.jpg", (20, 20))
