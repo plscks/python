@@ -42,7 +42,7 @@ def getInfo():
     bt = datetime.fromtimestamp(boot_time_timestamp)
     info.append(f'{bt.month}/{bt.day}/{bt.year} {bt.hour}:{bt.minute}:{bt.second}')
     info.append(platform.release())
-    info.append(platform.node)
+    info.append(platform.node())
     info.append(getCPU())
     uptimeComp = datetime(1,1,1) + timedelta(uptimeRaw)
     info.append(f'{uptimeComp.day-1}d {uptimeComp.hour}h {uptimeComp.minute}m {uptimeComp.second}s')
