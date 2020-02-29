@@ -8,7 +8,7 @@
 # Couldn't find anything the was working so I decided to write my own in Python 3
 # uses the imgrender module (it is wonderful) pip install imgrender
 #
-from datetime import datetime, timedealta
+from datetime import datetime, timedelta
 import imgrender
 from imgrender import render
 import os
