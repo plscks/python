@@ -9,6 +9,7 @@
 # uses the imgrender module (it is wonderful) pip install imgrender
 #
 from datetime import datetime, timedelta
+import distro
 import imgrender
 from imgrender import render
 import os
@@ -33,7 +34,7 @@ def getInfo():
     """
 
     info = []
-    os = list(platform.dist())
+    os = list(distro.linux_distribution())
     os.insert(1, platform.system())
     os.append(platform.machine())
     info.append(' '.join(os))
@@ -113,8 +114,14 @@ def getNet():
     """
 
     ipAddr = []
-    eth0 = psutil.net_if_addrs()['eth0']
-    locIP = eth0[0][3]
+    ethCards = os.listdir('/sys/class/net/')
+    for card in ethCards:
+        if card.startswith('e'):
+            netCard = card
+        else:
+            pass
+    ethCard = psutil.net_if_addrs()[netCard]
+    locIP = ethCard[0][3]
     ipAddr.append(locIP)
     extIP = urllib.request.urlopen('https://ident.me').read().decode('utf8')
     ipAddr.append(extIP)
