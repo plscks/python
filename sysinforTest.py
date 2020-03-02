@@ -39,13 +39,19 @@ def getInfo():
     info.append(' '.join(os))
     boot_time_timestamp = psutil.boot_time()
     uptimeRaw = time.time() - boot_time_timestamp
+    days = uptimeRaw // (24 * 3600)
+    uptimeRaw = uptimeRaw % (24 * 3600)
+    hours = uptimeRaw // 3600
+    uptimeRaw %= 3600
+    minutes = uptimeRaw // 60
+    uptimeRaw %= 60
+    seconds = uptimeRaw
     bt = datetime.fromtimestamp(boot_time_timestamp)
     info.append(f'{bt.month}/{bt.day}/{bt.year} {bt.hour}:{bt.minute}:{bt.second}')
     info.append(platform.release())
     info.append(platform.node())
     info.append(getCPU())
-    uptimeComp = datetime(1,1,1) + timedelta(uptimeRaw)
-    info.append(f'{uptimeComp.day-1}d {uptimeComp.hour}h {uptimeComp.minute}m {uptimeComp.second}s')
+    info.append(f'{int(round(days))}d {int(round(hours))}h {int(round(minutes))}m {int(round(seconds))}s')
     info.append(f'{getMem()[2]} / {getMem()[0]}  {getMem()[3]}% used  {getMem()[1]} free')
     info.append(f'{getMem()[6]} / {getMem()[4]}  {getMem()[7]}% used  {getMem()[5]} free')
     info.append(f'{getNet()[0]}')
