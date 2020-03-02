@@ -97,11 +97,11 @@ def getMem():
     memArray.append(get_size(mem.total))
     memArray.append(get_size(mem.available))
     memArray.append(get_size(mem.used))
-    memArray.append(get_size(mem.percent))
+    memArray.append(mem.percent)
     memArray.append(get_size(swap.total))
     memArray.append(get_size(swap.total - swap.used))
     memArray.append(get_size(swap.used))
-    memArray.append(get_size(swap.percent))
+    memArray.append(swap.percent)
     return memArray
 
 
