@@ -8,6 +8,13 @@
 #
 import datetime
 import pandas as pd
+import time
+import subprocess
+
+from board import SCL, SDA
+import busio
+from PIL import Image, ImageDraw, ImageFont
+import adafruit_ssd1306
 
 def dataGrab():
     now = datetime.datetime.utcnow()
@@ -46,9 +53,39 @@ def output(world, us, local):
     print(f'Illinois confirmed cases:  {local[0]}')
     print(f'Illinois confirmed deaths: {local[1]}')
 
+def i2cOut(world, us, local):
+    i2c = busio.I2C(SCL, SDA)
+    disp = adafruit_ssd1306.SSD1306_I2C(128, 64, i2c)
+    disp.fill(0)
+    disp.show()
+    width = disp.width
+    height = disp.height
+    image = Image.new('1', (width, height))
+    draw = ImageDraw.Draw(image)
+    draw.rectangle((0, 0, width, height), outline=0, fill=0)
+    padding = -2
+    top = padding
+    bottom = height-padding
+    font = ImageFont.load_default()
+    #font = ImageFont.truetype('/home/plscks/FiraCode-Regular.ttf', 9)
+    draw.rectangle((0, 0, width, height), outline=0, fill=0)
+    draw.text((x, top+0), '   COVID-19 DATA', font=font, fill=255)
+    draw.text((x, top+8), '~~~~~~~~~~~~~~~~~~~~', font=font, fill=255)
+    draw.text((x, top+16), f'World cases:{world[0]}', font=font, fill=255)
+    draw.text((x, top+24), f'World deaths:{world[1]}', font=font, fill=255)
+    draw.text((x, top+32), f'US cases:{us[0]}', font = font, fill = 255)
+    draw.text((x, top+40), f'US deaths:{us[1]}', font = font, fill = 255)
+    draw.text((x, top+48), f'Il cases:{local[0]}', font = font, fill = 255)
+    draw.text((x, top+56), f'Il deaths:{local[1]}', font = font, fill = 255)
+
+    # Display image.
+    disp.image(image)
+    disp.show()
+
 if __name__ == "__main__":
     data = dataGrab()
     worldData = parseData('world', data)
     usData = parseData('us', data)
     localData = parseData('local', data)
     output(worldData, usData, localData)
+    i2cOut(worldData, usData, localData)
