@@ -56,8 +56,8 @@ font = ImageFont.load_default()
 draw.rectangle((0, 0, width, height), outline=0, fill=0)
 
 
-draw.text((x, top+0), 'Line 1', font=font, fill=255)
-draw.text((x, top+8), 'Line 2', font=font, fill=255)
+draw.text((x, top+0), 'Length test:', font=font, fill=255)
+draw.text((x, top+8), '12345678901234567890', font=font, fill=255)
 draw.text((x, top+16), 'Line 3', font=font, fill=255)
 draw.text((x, top+24), 'Line 4', font=font, fill=255)
 draw.text((x, top+32), 'Line 5', font = font, fill = 255)
