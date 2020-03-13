@@ -66,6 +66,7 @@ def i2cOut(world, us, local):
     padding = -2
     top = padding
     bottom = height-padding
+    x = 0
     font = ImageFont.load_default()
     #font = ImageFont.truetype('/home/plscks/FiraCode-Regular.ttf', 9)
     draw.rectangle((0, 0, width, height), outline=0, fill=0)

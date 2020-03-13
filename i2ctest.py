@@ -56,8 +56,8 @@ font = ImageFont.load_default()
 draw.rectangle((0, 0, width, height), outline=0, fill=0)
 
 
-draw.text((x, top+0), 'Length test:', font=font, fill=255)
-draw.text((x, top+8), '123456789102345678901234567890', font=font, fill=255)
+draw.text((x, top+0), '   COVID-19 DATA', font=font, fill=255)
+draw.text((x, top+8), '~~~~~~~~~~~~~~~~~~~~', font=font, fill=255)
 draw.text((x, top+16), 'Line 3', font=font, fill=255)
 draw.text((x, top+24), 'Line 4', font=font, fill=255)
 draw.text((x, top+32), 'Line 5', font = font, fill = 255)
