@@ -72,12 +72,12 @@ def i2cOut(world, us, local):
     draw.rectangle((0, 0, width, height), outline=0, fill=0)
     draw.text((x, top+0), '   COVID-19 DATA', font=font, fill=255)
     draw.text((x, top+8), '~~~~~~~~~~~~~~~~~~~~', font=font, fill=255)
-    draw.text((x, top+16), f'World cases:{world[0]}', font=font, fill=255)
-    draw.text((x, top+24), f'World deaths:{world[1]}', font=font, fill=255)
-    draw.text((x, top+32), f'US cases:{us[0]}', font = font, fill = 255)
-    draw.text((x, top+40), f'US deaths:{us[1]}', font = font, fill = 255)
-    draw.text((x, top+48), f'Il cases:{local[0]}', font = font, fill = 255)
-    draw.text((x, top+56), f'Il deaths:{local[1]}', font = font, fill = 255)
+    draw.text((x, top+16), f'World cases:  {world[0]}', font=font, fill=255)
+    draw.text((x, top+24), f'World deaths: {world[1]}', font=font, fill=255)
+    draw.text((x, top+32), f'US cases:  {us[0]}', font = font, fill = 255)
+    draw.text((x, top+40), f'US deaths: {us[1]}', font = font, fill = 255)
+    draw.text((x, top+48), f'Il cases:  {local[0]}', font = font, fill = 255)
+    draw.text((x, top+56), f'Il deaths: {local[1]}', font = font, fill = 255)
 
     # Display image.
     disp.image(image)
