@@ -10,7 +10,7 @@ import datetime
 import pandas as pd
 
 def dataGrab():
-    now = datetime.datetime.now()
+    now = datetime.datetime.utcnow()
     csvFormat = f'{now.month:02d}-{(now.day-1):02d}-{now.year}.csv'
     url = f'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/{csvFormat}'
     df = pd.read_csv(url,names=['Province', 'Country', 'Updated', 'Confirmed', 'Deaths', 'Recovered', 'Latitude', 'Longitude'], skiprows=1)
@@ -34,8 +34,9 @@ def parseData(region, df):
         return localTotals
 
 def output(world, us, local):
-    print('COVID-19 Data')
-    print('~~~~~~~~~~~~~')
+    now = datetime.datetime.utcnow()
+    print(f'Available COVID-19 Data as of {now.month:02d}-{(now.day):02d}-{now.year} 00:00 UTC')
+    print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
     print(f'Worldwide confirmed cases:   {world[0]}')
     print(f'Worldwide confirmaed deaths: {world[1]}')
     print('')
