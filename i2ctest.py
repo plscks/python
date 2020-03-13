@@ -45,12 +45,12 @@ bottom = height-padding
 x = 0
 
 # Load default font.
-#font = ImageFont.load_default()
+font = ImageFont.load_default()
 
 # Alternatively load a TTF font.  Make sure the .ttf font file is in the
 # same directory as the python script!
 # Some other nice fonts to try: http://www.dafont.com/bitmap.php
-font = ImageFont.truetype('/home/plscks/FiraCode-Regular.ttf', 9)
+#font = ImageFont.truetype('/home/plscks/FiraCode-Regular.ttf', 9)
 
 # Draw a black filled box to clear the image.
 draw.rectangle((0, 0, width, height), outline=0, fill=0)
@@ -65,6 +65,8 @@ draw.text((x, top+24), 'Line 4', font=font, fill=255)
 draw.text((x, top+32), 'Line 5', font = font, fill = 255)
 draw.text((x, top+40), 'Line 6', font = font, fill = 255)
 draw.text((x, top+48), 'Line 7', font = font, fill = 255)
+draw.text((x, top+56), 'Line 8', font = font, fill = 255)
+draw.text((x, top+64), 'Line 9', font = font, fill = 255)
 
 # Display image.
 disp.image(image)
