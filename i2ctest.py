@@ -1,7 +1,7 @@
 # raspberry pi 3 I2C test
 # Learning to use I2C on RPi3
-# uses https://github.com/adafruit/Adafruit_Python_SSD1306.git library
-#
+# uses https://github.com/adafruit/Adafruit_CircuitPython_SSD1306 library
+# sudo pip3 install adafruit-circuitpython-ssd1306
 # Here we go!
 import time
 import subprocess
