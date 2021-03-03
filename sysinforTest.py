@@ -121,7 +121,7 @@ def getNet():
         else:
             pass
     ethCard = psutil.net_if_addrs()[netCard]
-    locIP = ethCard[0][3]
+    locIP = ethCard[0][1]
     ipAddr.append(locIP)
     extIP = urllib.request.urlopen('https://ident.me').read().decode('utf8')
     ipAddr.append(extIP)
