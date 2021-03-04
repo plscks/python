@@ -8,15 +8,15 @@
 # Couldn't find anything the was working so I decided to write my own in Python 3
 # uses the imgrender module (it is wonderful) pip install imgrender
 #
-from datetime import datetime, timedelta
-import distro
-import imgrender
-from imgrender import render
 import os
 import platform
-import psutil
 import time
 import urllib.request
+from datetime import datetime
+
+import distro
+import imgrender
+import psutil
 
 
 def getInfo():
@@ -184,7 +184,4 @@ def render(path, scale=(60, 60)):
 
 
 os.system('cls' if os.name == 'nt' else 'clear')
-tic = time.perf_counter()
 render("/home/plscks/artwork-the-starry-night.jpg", (20, 20))
-toc = time.perf_counter()
-print(f"Render runtime: {toc - tic:0.4f} seconds")
