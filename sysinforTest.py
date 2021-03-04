@@ -18,6 +18,7 @@ import psutil
 import time
 import urllib.request
 
+
 def getInfo():
     """
     Collects general PC information
@@ -165,19 +166,23 @@ def render(path, scale=(60, 60)):
     image = imgrender.get_image(path)
     output = renderer.render_image(image, scale)
     extraInfo = getInfo()
-    output[1].append(colorString(red, '                OS:    ') +  f'{extraInfo[0]}')
-    output[2].append(colorString(red, '                KERNAL:    ') +  f'{extraInfo[2]}')
-    output[3].append(colorString(red, '                BOOT TIME:    ') +  f'{extraInfo[1]}')
-    output[4].append(colorString(red, '                CPU:    ') +  f'{extraInfo[4]}')
-    output[5].append(colorString(red, '                MEMORY:    ') +  f'{extraInfo[6]}')
-    output[6].append(colorString(red, '                SWAP:    ') +  f'{extraInfo[7]}')
-    output[7].append(colorString(ltgray, '                -----------------------------------------------------------------------'))
-    output[8].append(colorString(red, '                HOSTNAME:    ') +  f'{extraInfo[3]}')
-    output[9].append(colorString(red, '                LOCAL IP:    ') +  f'{extraInfo[8]}')
-    output[10].append(colorString(red, '                PUBLIC IP:    ') +  f'{extraInfo[9]}')
-    output[11].append(colorString(red, '                UPTIME:    ') +  f'{extraInfo[5]}')
+    output[1].append(colorString(red, '                OS:    ') + f'{extraInfo[0]}')
+    output[2].append(colorString(red, '                KERNAL:    ') + f'{extraInfo[2]}')
+    output[3].append(colorString(red, '                BOOT TIME:    ') + f'{extraInfo[1]}')
+    output[4].append(colorString(red, '                CPU:    ') + f'{extraInfo[4]}')
+    output[5].append(colorString(red, '                MEMORY:    ') + f'{extraInfo[6]}')
+    output[6].append(colorString(red, '                SWAP:    ') + f'{extraInfo[7]}')
+    output[7].append(
+        colorString(ltgray, '                -----------------------------------------------------------------------'))
+    output[8].append(colorString(red, '                HOSTNAME:    ') + f'{extraInfo[3]}')
+    output[9].append(colorString(red, '                LOCAL IP:    ') + f'{extraInfo[8]}')
+    output[10].append(colorString(red, '                PUBLIC IP:    ') + f'{extraInfo[9]}')
+    output[11].append(colorString(red, '                UPTIME:    ') + f'{extraInfo[5]}')
     print('\n'.join([''.join(row) for row in output]))
 
 
 os.system('cls' if os.name == 'nt' else 'clear')
+tic = time.perf_counter()
 render("/home/plscks/artwork-the-starry-night.jpg", (20, 20))
+toc = time.perf_counter()
+print(f"Render runtime: {toc - tic:0.4f} seconds")
