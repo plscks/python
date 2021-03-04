@@ -53,11 +53,13 @@ def getInfo():
     info.append(platform.release())
     info.append(platform.node())
     info.append(getCPU())
+    memFinal = getMem()
+    netFinal = getNet()
     info.append(f'{int(round(days))}d {int(round(hours))}h {int(round(minutes))}m {int(round(seconds))}s')
-    info.append(f'{getMem()[2]} / {getMem()[0]}  {getMem()[3]}% used  {getMem()[1]} free')
-    info.append(f'{getMem()[6]} / {getMem()[4]}  {getMem()[7]}% used  {getMem()[5]} free')
-    info.append(f'{getNet()[0]}')
-    info.append(f'{getNet()[1]}')
+    info.append(f'{memFinal[2]} / {memFinal[0]}  {memFinal[3]}% used  {memFinal[1]} free')
+    info.append(f'{memFinal[6]} / {memFinal[4]}  {memFinal[7]}% used  {memFinal[5]} free')
+    info.append(f'{netFinal[0]}')
+    info.append(f'{netFinal[1]}')
     return info
 
 
