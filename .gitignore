@@ -10,3 +10,4 @@ Test5.png
 node_modules/
 update.sh
 nohup.out
+__pycache__/

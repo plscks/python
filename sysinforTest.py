@@ -49,7 +49,7 @@ def getInfo():
     uptimeRaw %= 60
     seconds = uptimeRaw
     bt = datetime.fromtimestamp(boot_time_timestamp)
-    info.append(f'{bt.month}/{bt.day}/{bt.year} {bt.hour}:{bt.minute}:{bt.second}')
+    info.append(f'{bt.month}/{bt.day}/{bt.year} {bt.hour:02d}:{bt.minute:02d}:{bt.second:02d}')
     info.append(platform.release())
     info.append(platform.node())
     info.append(getCPU())
