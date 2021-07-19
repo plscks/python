@@ -11,3 +11,4 @@ node_modules/
 update.sh
 nohup.out
 __pycache__/
+workspace.code-workspace
