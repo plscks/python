@@ -184,4 +184,4 @@ def render(path, scale=(60, 60)):
 
 
 os.system('cls' if os.name == 'nt' else 'clear')
-render("/home/plscks/art7.png", (20, 20))
+render("/home/plscks/artwork-the-starry-night.jpg", (20, 20))
