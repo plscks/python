@@ -35,10 +35,8 @@ def getInfo():
     """
 
     info = []
-    os = list(distro.linux_distribution())
-    os.insert(1, platform.system())
-    os.append(platform.machine())
-    info.append(' '.join(os))
+    os = [distro.id().capitalize()] + [distro.version()] + distro.name(pretty=True).split(' ')[1:3] + [platform.machine()]
+    info.append(f'{" ".join(os[:2])} - {" ".join(os[2:])}')
     boot_time_timestamp = psutil.boot_time()
     uptimeRaw = time.time() - boot_time_timestamp
     days = uptimeRaw // (24 * 3600)
